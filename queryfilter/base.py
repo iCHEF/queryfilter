@@ -23,8 +23,9 @@ class FieldFilter(object):
         raise NotImplementedError(
             "Type: {0} and condition: {1} doesn't exist.".format())
 
-    def __init__(self, field_name):
+    def __init__(self, field_name, filter_args):
         self.field_name = field_name
+        self.filter_args = filter_args
 
     # TODO: Put it back when we need it
     # @abc.abstractmethod
