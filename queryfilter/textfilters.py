@@ -7,5 +7,8 @@ class TextFullyMatchedFilter(FieldFilter):
     filter_type = "string"
     filter_condition = "equals"
 
-    def on_instance(self, instance):
-        return bool(instance.get(self.field_name) == self.filter_args["value"])
+    def on_dicts(self, dicts):
+        return [
+            v for v in dicts
+            if bool(dicts.get(self.field_name) == self.filter_args["value"])
+        ]

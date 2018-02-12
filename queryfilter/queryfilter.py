@@ -20,8 +20,7 @@ class QueryFilter(object):
             query = filter_instance.on_sqlalchemy_query(query)
         return query
 
-    def on_instance(self, object_to_validate):
+    def on_dicts(self, dicts):
         for filter_instance in self.filters:
-            if not filter_instance.on_instance(object_to_validate):
-                return False
-        return True
+            dicts = filter_instance.on_dicts(dicts)
+        return dicts

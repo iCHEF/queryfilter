@@ -38,5 +38,5 @@ class FieldFilter(object):
         pass
 
     @abc.abstractmethod
-    def on_instance(self, instance):
+    def on_dicts(self, dicts):
         pass

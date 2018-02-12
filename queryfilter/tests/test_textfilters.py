@@ -13,7 +13,7 @@ class TestTextFullyMatchedFilter(object):
         text_filter = TextFullyMatchedFilter(field_name_to_test, {
             "value": text_to_test
         })
-        assert text_filter.on_instance(instance_to_test)
+        assert text_filter.on_dicts([instance_to_test])[0] == instance_to_test
 
     def test_text_does_not_match_should_fail(self):
         field_name_to_test = "name"
@@ -25,4 +25,4 @@ class TestTextFullyMatchedFilter(object):
         text_filter = TextFullyMatchedFilter(field_name_to_test, {
             "value": wrong_text_to_test
         })
-        assert text_filter.on_instance(instance_to_test)
+        assert len(text_filter.on_dicts([instance_to_test])) == 0
