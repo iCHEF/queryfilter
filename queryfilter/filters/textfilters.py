@@ -9,12 +9,6 @@ class TextFullyMatchedFilter(FieldFilter):
         self.match_target = match_target
         super(FieldFilter, self).__init__(field_name)
 
-    def apply_to_django_query(self, query):
-        return query.filter(**{self.field_name: self.match_target})
-
-    def apply_to_sqlalchemy_query(self, query):
-        return query.filter(**{self.field_name: self.match_target})
-
-    def validate_object(self, object_to_validate):
+    def on_instance(self, object_to_validate):
         return bool(
             object_to_validate.get(self.field_name) == self.match_target)

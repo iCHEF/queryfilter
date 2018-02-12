@@ -26,14 +26,16 @@ class FieldFilter(object):
     def __init__(self, field_name):
         self.field_name = field_name
 
-    @abc.abstractmethod
-    def apply_to_django_query(self, query):
+    # TODO: Put it back when we need it
+    # @abc.abstractmethod
+    def on_django_query(self, query):
+        pass
+
+    # TODO: Put it back when we need it
+    # @abc.abstractmethod
+    def on_sqlalchemy_query(self, query):
         pass
 
     @abc.abstractmethod
-    def apply_to_sqlalchemy_query(self, query):
-        pass
-
-    @abc.abstractmethod
-    def validate_object(self, object_to_validate):
+    def on_instance(self, instance):
         pass
