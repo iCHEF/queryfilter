@@ -9,6 +9,6 @@ class TextFullyMatchedFilter(FieldFilter):
 
     def on_dicts(self, dicts):
         return [
-            v for v in dicts
-            if bool(dicts.get(self.field_name) == self.filter_args["value"])
+            d for d in dicts
+            if bool(d.get(self.field_name) == self.filter_args["value"])
         ]
