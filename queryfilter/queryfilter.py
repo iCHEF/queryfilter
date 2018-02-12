@@ -10,12 +10,6 @@ class QueryFilter(object):
             for (field_name, filter_info) in filter_dict.items
         ]
 
-    def add_filter(self, filter_instance):
-        if not issubclass(filter_instance.cls, FieldFilter):
-            raise TypeError("{0} is not a FieldFilter class.".format(
-                filter_instance.cls.__name__))
-        self.filters.append(filter_instance)
-
     def on_django_query(self, query):
         for filter_instance in self.filters:
             query = filter_instance.on_django_query(query)
