@@ -14,17 +14,18 @@ def read_requirements_as_package_names():
     3. Lines may have post-comment, so they should be spilt by spaces
        and get the first part.
     """
-    requirements_path = os.path.join(source_root, "pipenv-requirements.txt")
-    with open(requirements_path, "r") as f:
-        stripped_lines = (line.strip() for line in f)
-        valid_lines = (
-            line for line in stripped_lines
-            if line and not line.startswith("#") and not line.startswith("-r")
-        )
-        valid_package_names = [
-            line.split()[0].replace(";", "") for line in valid_lines
-        ]
-        return valid_package_names
+    # FIXME: temporary remove it ... TBD
+    # requirements_path = os.path.join(source_root, "pipenv-requirements.txt")
+    # with open(requirements_path, "r") as f:
+    #     stripped_lines = (line.strip() for line in f)
+    #     valid_lines = (
+    #         line for line in stripped_lines
+    #         if line and not line.startswith("#") and not line.startswith("-r")
+    #     )
+    #     valid_package_names = [
+    #         line.split()[0].replace(";", "") for line in valid_lines
+    #     ]
+    #     return valid_package_names
 
 
 setup(
