@@ -8,6 +8,7 @@ name = "pypi"
 [packages]
 
 
+
 [dev-packages]
 
 pytest = "*"
@@ -17,3 +18,4 @@ pytest-cov = "*"
 "flake8" = "*"
 ipython = {version = "*", markers="python_version >= '3.0'"}
 tox = "*"
+"flake8-junit-report" = "*"
