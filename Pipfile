@@ -15,5 +15,6 @@ pytest-runner = "*"
 coverage = "*"
 pytest-cov = "*"
 "flake8" = "*"
+pytest-flake8 = "*"
 ipython = {version = "*", markers="python_version >= '3.0'"}
 tox = "*"
