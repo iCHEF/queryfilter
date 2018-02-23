@@ -14,24 +14,24 @@ def read_requirements_as_package_names():
     3. Lines may have post-comment, so they should be spilt by spaces
        and get the first part.
     """
-    # FIXME: temporary remove it ... TBD
-    # requirements_path = os.path.join(source_root, "pipenv-requirements.txt")
-    # with open(requirements_path, "r") as f:
-    #     stripped_lines = (line.strip() for line in f)
-    #     valid_lines = (
-    #         line for line in stripped_lines
-    #         if line and not line.startswith("#") and not line.startswith("-r")
-    #     )
-    #     valid_package_names = [
-    #         line.split()[0].replace(";", "") for line in valid_lines
-    #     ]
-    #     return valid_package_names
+    requirements_path = os.path.join(source_root, "pipenv-requirements.txt")
+    with open(requirements_path, "r") as f:
+        stripped_lines = (line.strip() for line in f)
+        valid_lines = (
+            line for line in stripped_lines
+            if line and not line.startswith("#") and not line.startswith("-r")
+        )
+        valid_package_names = [
+            line.split()[0].replace(";", "") for line in valid_lines
+        ]
+        return valid_package_names
 
 
 setup(
     name="queryfilter",
     version="0.1.0",
-    description="Allow same query interface to be shared between Django ORM, SQLAlchemy, and GraphQL backend.",
+    description=("Allow same query interface to be shared between Django ORM,"
+                 "SQLAlchemy, and GraphQL backend."),
     long_description=open(os.path.join(source_root, "README.md")).read(),
     license="UNLICENSE",
     url="https://github.com/iCHEF/queryfilter",
