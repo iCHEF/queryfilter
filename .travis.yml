@@ -1,12 +1,18 @@
 # Wire up travis
 language: python
 sudo: false
+stages:
+  - test
+  - lint
+  - coverage
 
-matrix:
+jobs:
     include:
-        - python: 3.6
+        - stage: test
+          python: 3.6
           env: TOXENV=py36
-        - python: 3.6
+        - stage: lint
+          python: 3.6
           env: TOXENV=flake8
         - python: 3.6
           env: TOXENV=coverage
