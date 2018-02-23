@@ -1,15 +1,14 @@
-# Wire up travis
 language: python
 sudo: false
-
+notifications:
+  slack:
+    secure: DQf7maAWtJY/8tEzhXlTwJQgn76v6Vl5M2Xh8ELcokTkWLdWGkICN6yg86QVNvGlTRPt+ulrJyG3Bcd1nH7TOkAg+RPGBd8nGzMiNERtYzw1ZloudKkvDub+4EfdhCaB84/icQtnK5HgHQw9wRQYnApJmMFj6Ocjt+mBblS+Aa/W14JH0A87rLHVFkQocv/7nYU+LTzr3pvTA1ZraS5ir2r5VtiMunv3G5DRtsX7aH98dV33N+zTjMKXIvHdcCnPGUsLItx/QfL2QKubDH02n2qtXjBB3MaLP2vmuKeejllCoHbxaRed2bua5wOwP3p6qSORrid0PyoTVQ8ahjfUsewHGq0WwRX8IohQweTMLiDHX8NGqznrLnIaWxhdUWMwv4OYpyZEJHWKCDeJhFUH6Ed9vW6i+RzKsmVDokeKsdw5T/d17pAClX65W8x6kQAuUINt/Xg0Ou56dTqtlMoRtHYsFRF5CqeFC+M8MnUzdgPp6IF+O+K9A1rn2Ur/+7mQG9/w3RfD6MKcOQIWgr75l5us7l0zCNrdgjCgAnb7YZLSzlVpBCB11C7hPzagNwYpI/ahWg1SnYjeryGr/HjWr4k22K+DvLbGpnlDbO4C95xWvGzMudQmDQ9GmHkz8Iq8w+zg3LCn6ePx8sZbknuHZp1RZDEcQWx2Y0WM18ADTEE=
 matrix:
-    include:
-        - python: 3.6
-          env: TOXENV=py36
-
+  include:
+  - python: 3.6
+    env: TOXENV=py36
 install:
-  - travis_retry pip install pipenv
-  - travis_retry pipenv install --dev
-
+- travis_retry pip install pipenv
+- travis_retry pipenv install --dev
 script:
-  - travis_retry tox
+- travis_retry tox
