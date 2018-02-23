@@ -7,7 +7,7 @@ class QueryFilter(object):
     def __init__(self, filter_dict):
         self.filters = [
             FieldFilter.find_filter_class(filter_info)(field_name, filter_info)
-            for (field_name, filter_info) in filter_dict.items
+            for (field_name, filter_info) in filter_dict.items()
         ]
 
     def on_django_query(self, query):

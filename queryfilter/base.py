@@ -21,7 +21,8 @@ class FieldFilter(object):
                             filter_cls.filter_condition == filter_condition:
                 return filter_cls
         raise NotImplementedError(
-            "Type: {0} and condition: {1} doesn't exist.".format())
+            "Type: {0} and condition: {1} doesn't exist.".format(
+                filter_type, filter_condition))
 
     def __init__(self, field_name, filter_args):
         self.field_name = field_name
