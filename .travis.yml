@@ -7,7 +7,11 @@ matrix:
         - python: 3.6
           env: TOXENV=py36
         - python: 3.6
-          env: TOXENV=py3-cover,coverage
+          env: TOXENV=flake8
+        - python: 3.6
+          env: TOXENV=flake8_junit
+        - python: 3.6
+          env: TOXENV=coverage
 
 install:
   - travis_retry pip install pipenv
