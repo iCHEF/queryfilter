@@ -1,22 +1,11 @@
 # Wire up travis
 language: python
 sudo: false
-stages:
-  - test
-  - lint
-  - coverage
 
-jobs:
+matrix:
     include:
-        - stage: test
-          python: 3.6
+        - python: 3.6
           env: TOXENV=py36
-        - stage: lint
-          python: 3.6
-          env: TOXENV=flake8
-        - stage: coverage
-          python: 3.6
-          env: TOXENV=coverage
 
 install:
   - travis_retry pip install pipenv
