@@ -3,12 +3,16 @@ from six import add_metaclass
 import abc
 
 from .base import FieldFilter
+from .queryfilter import QueryFilter
 
 
 @add_metaclass(abc.ABCMeta)
 class TextMatchMixin(object):
     @abc.abstractmethod
     def _is_value_matched(self, value): pass
+
+    def get_query_value(self):
+        return self.filter_args["value"]
 
     def on_dicts(self, dicts):
         return [
@@ -17,33 +21,25 @@ class TextMatchMixin(object):
         ]
 
 
+@QueryFilter.register_type_condition('string', 'equals')
 class TextFullyMatchedFilter(TextMatchMixin, FieldFilter):
-    filter_type = "string"
-    filter_condition = "equals"
-
     def _is_value_matched(self, value):
-        return bool(value == self.filter_args["value"])
+        return bool(value == self.get_query_value)
 
 
+@QueryFilter.register_type_condition('string', 'contains')
 class TextPartialMatchedFilter(TextMatchMixin, FieldFilter):
-    filter_type = "string"
-    filter_condition = "contains"
-
     def _is_value_matched(self, value):
-        return bool(self.filter_args["value"] in value)
+        return bool(self.get_query_value in value)
 
 
-class TextStartWithMatchedFilter(TextMatchMixin, FieldFilter):
-    filter_type = "string"
-    filter_condition = "contains"
-
+@QueryFilter.register_type_condition('string', 'starts_with')
+class TextStartsWithMatchedFilter(TextMatchMixin, FieldFilter):
     def _is_value_matched(self, value):
-        return bool(value.startswith(self.filter_args["value"]))
+        return bool(value.startswith(self.get_query_value))
 
 
-class TextEndWithMatchedFilter(TextMatchMixin, FieldFilter):
-    filter_type = "string"
-    filter_condition = "contains"
-
+@QueryFilter.register_type_condition('string', 'ends_with')
+class TextEndsWithMatchedFilter(TextMatchMixin, FieldFilter):
     def _is_value_matched(self, value):
-        return bool(value.endswith(self.filter_args["value"]))
+        return bool(value.endswith(self.get_query_value))
