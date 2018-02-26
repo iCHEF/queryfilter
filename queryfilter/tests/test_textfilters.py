@@ -59,6 +59,12 @@ class TestTextStartWithMatchedFilter(TestTextFilterMixin):
         })
         assert len(text_filter.on_dicts(self.dicts)) == 0
 
+        text_not_match_with_endwith = self.text_to_test[-1:]
+        text_filter = TextStartWithMatchedFilter(self.field_name_to_test, {
+            "value": text_not_match_with_endwith
+        })
+        assert len(text_filter.on_dicts(self.dicts)) == 0
+
 
 class TestTextEndWithMatchedFilter(TestTextFilterMixin):
     def test_text_partial_match(self):
@@ -71,5 +77,11 @@ class TestTextEndWithMatchedFilter(TestTextFilterMixin):
         text_not_match = "not"
         text_filter = TextEndWithMatchedFilter(self.field_name_to_test, {
             "value": text_not_match
+        })
+        assert len(text_filter.on_dicts(self.dicts)) == 0
+
+        text_not_match_with_startwith = self.text_to_test[:1]
+        text_filter = TextEndWithMatchedFilter(self.field_name_to_test, {
+            "value": text_not_match_with_startwith
         })
         assert len(text_filter.on_dicts(self.dicts)) == 0
