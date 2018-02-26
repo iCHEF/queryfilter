@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 from .base import FieldFilter
+from .utils import is_same_class
 
 
 class QueryFilter(object):
@@ -13,17 +14,12 @@ class QueryFilter(object):
 
     @classmethod
     def register_type_condition(cls, filter_type, filter_condition):
-        def _is_same_class(x_cls, y_cls):
-            full_path_of_x = x_cls.__module__ + "." + x_cls.__name__
-            full_path_of_y = y_cls.__module__ + "." + y_cls.__name__
-            return full_path_of_x == full_path_of_y
-
         def decorator(filter_class):
             if not issubclass(filter_class, FieldFilter):
                 raise "Filter to register must be a subclass of FieldFilter."
             filter_key = cls.get_filter_key_from_type_and_condition(
                 filter_type, filter_condition)
-            if filter_key in cls.filter_candidates and not _is_same_class(
+            if filter_key in cls.filter_candidates and not is_same_class(
                     cls.filter_candidates[filter_key], filter_class
             ):
                 raise ValueError(
