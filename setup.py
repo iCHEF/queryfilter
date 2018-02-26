@@ -7,7 +7,6 @@ source_root = os.path.dirname(os.path.abspath(__file__))
 
 required_dev = [
     'pytest',
-    'pytest-runner',
     "coverage",
     "pytest-cov",
     "flake8",
