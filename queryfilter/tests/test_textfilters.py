@@ -1,9 +1,12 @@
 from __future__ import absolute_import
 
-from ..textfilters import TextFullyMatchedFilter, TextPartialMatchedFilter
+from ..textfilters import (
+    TextFullyMatchedFilter, TextPartialMatchedFilter,
+    TextStartWithMatchedFilter, TextEndWithMatchedFilter
+)
 
 
-class TestTextFilter(object):
+class TestTextFilterMixin(object):
     def setup(self):
         self.field_name_to_test = "name"
         self.text_to_test = "name_example"
@@ -11,6 +14,8 @@ class TestTextFilter(object):
             {self.field_name_to_test: self.text_to_test}
         ]
 
+
+class TestTextFullyMatchedFilter(TestTextFilterMixin):
     def test_text_fully_match(self):
         text_filter = TextFullyMatchedFilter(self.field_name_to_test, {
             "value": self.text_to_test
@@ -24,6 +29,8 @@ class TestTextFilter(object):
         })
         assert len(text_filter.on_dicts(self.dicts)) == 0
 
+
+class TestTextPartialMatchedFilter(TestTextFilterMixin):
     def test_text_partial_match(self):
         text_filter = TextPartialMatchedFilter(self.field_name_to_test, {
             "value": self.text_to_test[:1]
@@ -33,6 +40,36 @@ class TestTextFilter(object):
     def test_text_does_not_partial_match_should_fail(self):
         text_not_match = "not"
         text_filter = TextPartialMatchedFilter(self.field_name_to_test, {
+            "value": text_not_match
+        })
+        assert len(text_filter.on_dicts(self.dicts)) == 0
+
+
+class TestTextStartWithMatchedFilter(TestTextFilterMixin):
+    def test_text_partial_match(self):
+        text_filter = TextStartWithMatchedFilter(self.field_name_to_test, {
+            "value": self.text_to_test[:1]
+        })
+        assert len(text_filter.on_dicts(self.dicts)) == 1
+
+    def test_text_does_not_partial_match_should_fail(self):
+        text_not_match = "not"
+        text_filter = TextStartWithMatchedFilter(self.field_name_to_test, {
+            "value": text_not_match
+        })
+        assert len(text_filter.on_dicts(self.dicts)) == 0
+
+
+class TestTextEndWithMatchedFilter(TestTextFilterMixin):
+    def test_text_partial_match(self):
+        text_filter = TextEndWithMatchedFilter(self.field_name_to_test, {
+            "value": self.text_to_test[-1:]
+        })
+        assert len(text_filter.on_dicts(self.dicts)) == 1
+
+    def test_text_does_not_partial_match_should_fail(self):
+        text_not_match = "not"
+        text_filter = TextEndWithMatchedFilter(self.field_name_to_test, {
             "value": text_not_match
         })
         assert len(text_filter.on_dicts(self.dicts)) == 0

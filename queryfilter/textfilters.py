@@ -31,3 +31,19 @@ class TextPartialMatchedFilter(TextMatchMixin, FieldFilter):
 
     def _is_value_matched(self, value):
         return bool(self.filter_args["value"] in value)
+
+
+class TextStartWithMatchedFilter(TextMatchMixin, FieldFilter):
+    filter_type = "string"
+    filter_condition = "contains"
+
+    def _is_value_matched(self, value):
+        return bool(value.startswith(self.filter_args["value"]))
+
+
+class TextEndWithMatchedFilter(TextMatchMixin, FieldFilter):
+    filter_type = "string"
+    filter_condition = "contains"
+
+    def _is_value_matched(self, value):
+        return bool(value.endswith(self.filter_args["value"]))
