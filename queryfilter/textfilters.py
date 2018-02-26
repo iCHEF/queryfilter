@@ -3,7 +3,6 @@ from six import add_metaclass
 import abc
 
 from .base import FieldFilter
-from .queryfilter import QueryFilter
 
 
 @add_metaclass(abc.ABCMeta)
