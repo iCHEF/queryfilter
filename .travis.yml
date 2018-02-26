@@ -10,7 +10,6 @@ matrix:
   - python: 2.7
     env: TOXENV=py27
 install:
-- travis_retry pip install pipenv
-- travis_retry pipenv install --dev
+- travis_retry pip install -e ".[dev]"
 script:
 - tox
