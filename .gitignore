@@ -1,6 +1,7 @@
 # Project related
 ci/*.xml
 ci/flake8.txt
+ci/coverage_html/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

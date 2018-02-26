@@ -7,8 +7,10 @@ matrix:
   include:
   - python: 3.6
     env: TOXENV=py36
+  - python: 2.7
+    env: TOXENV=py27
 install:
 - travis_retry pip install pipenv
 - travis_retry pipenv install --dev
 script:
-- travis_retry tox
+- tox
