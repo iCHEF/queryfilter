@@ -7,8 +7,8 @@ from .queryfilter import QueryFilter
 @QueryFilter.register_type_condition('number')
 class NumberRangeFilter(FieldFilter):
     def get_query_range(self):
-        min_value = self.filter_args["min"]
-        max_value = self.filter_args["max"]
+        min_value = self.filter_args.get("min")
+        max_value = self.filter_args.get("max")
         return min_value, max_value
 
     def on_dicts(self, dicts):
