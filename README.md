@@ -1,4 +1,4 @@
-# queryfilter
+# queryfilter [![Build Status](https://travis-ci.org/iCHEF/queryfilter.png?branch=master)](https://travis-ci.org/iCHEF/queryfilter)
 
 ## Feature
 
