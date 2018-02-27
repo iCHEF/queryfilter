@@ -12,7 +12,7 @@ class QueryFilter(object):
 
     @classmethod
     def register_type_condition(cls, filter_type, filter_condition=None):
-        def _is_same_class(x_cls, y_cls):
+        def is_same_class(x_cls, y_cls):
             """
             Simply use "is" to compare two classes will not work,
             `cause class statement is an executable statement in python.
@@ -27,7 +27,7 @@ class QueryFilter(object):
             if not issubclass(filter_class, FieldFilter):
                 raise "Filter to register must be a subclass of FieldFilter."
             filter_key = cls.get_filter_key(filter_type, filter_condition)
-            if filter_key in cls.filters_mapping and not _is_same_class(
+            if filter_key in cls.filters_mapping and not is_same_class(
                     cls.filters_mapping[filter_key], filter_class
             ):
                 raise ValueError(
