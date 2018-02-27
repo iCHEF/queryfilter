@@ -13,7 +13,7 @@ class QueryFilter(object):
         return "{}.{}".format(filter_type, filter_condition)
 
     @classmethod
-    def register_type_condition(cls, filter_type, filter_condition):
+    def register_type_condition(cls, filter_type, filter_condition=None):
         def decorator(filter_class):
             if not issubclass(filter_class, FieldFilter):
                 raise "Filter to register must be a subclass of FieldFilter."
