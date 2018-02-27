@@ -34,24 +34,25 @@ class QueryFilter(object):
 
         return decorator
 
-    @classmethod
-    def _get_key_from_filter_query_data(cls, filter_query_data):
-        filter_type = filter_query_data["type"]
-        filter_condition = filter_query_data["condition"]
-        return cls.get_filter_key_from_type_and_condition(
-            filter_type, filter_condition)
-
     def __init__(self, filter_dict):
-        try:
-            self.filters = [
-                self.filter_candidates[self._get_key_from_filter_query_data(
-                    filter_query_data)](field_name, filter_query_data)
-                for (field_name, filter_query_data) in filter_dict.items()
-            ]
-        except KeyError as missing_filter_key:
-            raise KeyError("Filter {} does not registered.".format(
-                missing_filter_key)
+        def _get_filter_from_filter_query_data(data):
+            filter_key = self.get_filter_key_from_type_and_condition(
+                data["type"], data["condition"]
             )
+
+            if filter_key not in self.filter_candidates:
+                raise KeyError("Filter {} does not registered.".format(
+                    filter_key)
+                )
+            filter_cls = self.filter_candidates[filter_key]
+            return filter_cls  # clarify the returning
+
+        self.filters = [
+            _get_filter_from_filter_query_data(query_data)(
+                field_name, query_data
+            )
+            for (field_name, query_data) in filter_dict.items()
+        ]
 
     def on_django_query(self, query):
         for filter_instance in self.filters:
