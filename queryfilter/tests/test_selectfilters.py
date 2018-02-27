@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from ..selectfilters import SelectFilter
 
 
-class TestNumberRangeFilter(object):
+class TestSelectFilter(object):
     def setup(self):
         self.field_name_to_test = "member_type"
         self.type_to_test = 1
