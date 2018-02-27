@@ -1,0 +1,3 @@
+include *.txt *.ini *.cfg *.rst *.md
+include pipenv-requirements*
+include Makefile
