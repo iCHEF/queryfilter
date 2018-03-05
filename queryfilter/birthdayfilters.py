@@ -4,27 +4,6 @@ from .base import FieldFilter
 from .queryfilter import QueryFilter
 
 
-@QueryFilter.register_type_condition('birthday', 'age_range')
-class BirthdayAgeRangeFilter(FieldFilter):
-    def on_dicts(self, dicts):
-        range_start = self.filter_args.get("start")
-        if range_start is not None:
-            range_start_int = int(range_start)
-        range_end = self.filter_args.get("end")
-        if range_end is not None:
-            range_end_int = int(range_end)
-
-        def by_value_of_dict_field_in_range(dictobj):
-            age = int(dictobj.get(self.field_name))
-            return (
-                (range_start is None or age >= range_start_int)
-                and
-                (range_end is None or age <= range_end_int)
-            )
-
-        return list(filter(by_value_of_dict_field_in_range, dicts))
-
-
 @QueryFilter.register_type_condition('birthday', 'date_range')
 class BirthdayDateRangeFilter(FieldFilter):
     def split_month_day(self, birth):
