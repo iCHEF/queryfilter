@@ -64,16 +64,10 @@ class BirthdayDateRangeFilter(FieldFilter):
             return True
 
         def smaller_or_equal_to_range_end(month, day):
-            import alog
-            alog.info((month, day))
-            alog.info((month_end, day_end))
             if month < month_end:
-                alog.info("V")
                 return True
             if month == month_end and day <= day_end:
-                alog.info("V")
                 return True
-            alog.info("V")
             return False
 
         def filter_both_start_and_end(month, day):
