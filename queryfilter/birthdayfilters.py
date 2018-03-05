@@ -15,8 +15,7 @@ class BirthdayAgeRangeFilter(FieldFilter):
             range_end_int = int(range_end)
 
         def by_value_of_dict_field_in_range(dictobj):
-            birth_year = dictobj.get(self.field_name)
-            age = self.count_age(birth_year)
+            age = int(dictobj.get(self.field_name))
             return (
                 (range_start is None or age >= range_start_int)
                 and
