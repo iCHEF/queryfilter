@@ -40,7 +40,7 @@ class TestBirthdayDateRangeFilter(object):
 
     def test_date_range_across_year_should_match(self):
         date_filter = BirthdayDateRangeFilter(self.field_name_to_test, {
-            "start": "12/30",
+            "start": "12/10",
             "end": "01/30",
         })
         results_after_filter = date_filter.on_dicts(self.dataset_to_test)

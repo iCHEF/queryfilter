@@ -30,7 +30,7 @@ class BirthdayDateRangeFilter(FieldFilter):
                 return True
             if (month < month_end):
                 return True
-            if (month == month_end) and day <= day_start:
+            if (month == month_end) and day <= day_end:
                 return True
             return False
 
