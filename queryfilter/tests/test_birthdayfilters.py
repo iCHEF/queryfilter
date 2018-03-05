@@ -18,7 +18,7 @@ class TestBirthdayDateRangeFilter(object):
 
     def setup(self):
         self.field_name_to_test = "birth"
-        self.dates_to_test = ("12/31", "01/11", "02/29")
+        self.dates_to_test = ("12/31", "01/11", "02/29", "01/11")
         self.dataset_to_test = [
             {self.field_name_to_test: date} for date in self.dates_to_test
         ]
@@ -47,10 +47,10 @@ class TestBirthdayDateRangeFilter(object):
             "end": "01/30",
         })
         results_after_filter = date_filter.on_dicts(self.dataset_to_test)
-        assert len(results_after_filter) == 2
+        assert len(results_after_filter) == 3
         values_of_result_filters = self.values_of_filters(results_after_filter)
-        assert self.dates_to_test[0] in values_of_result_filters
-        assert self.dates_to_test[1] in values_of_result_filters
+        assert "12/31" in values_of_result_filters
+        assert "01/11" in values_of_result_filters
 
     def test_date_range_not_across_year_should_match(self):
         date_filter = BirthdayDateRangeFilter(self.field_name_to_test, {
