@@ -14,11 +14,11 @@ class NumberRangeFilter(FieldFilter):
     def on_dicts(self, dicts):
         (min_value, max_value) = self.get_query_range()
 
-        def _is_value_matched(field_value):
+        def is_value_matched(field_value):
             return (not min_value or field_value >= min_value) and \
                    (not max_value or field_value <= max_value)
 
         return [
             d for d in dicts
-            if _is_value_matched(d.get(self.field_name))
+            if is_value_matched(d.get(self.field_name))
         ]
