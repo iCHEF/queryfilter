@@ -21,7 +21,7 @@ setup(
     description=("Allow same query interface to be shared between Django ORM,"
                  "SQLAlchemy, and GraphQL backend."),
     long_description=open(os.path.join(source_root, "README.md")).read(),
-    license="UNLICENSE",
+    license="Apache Software License",
     url="https://github.com/iCHEF/queryfilter",
     tests_require=['pipenv'],  # Use pipenv install --dev
     packages=find_packages(str(source_root)),
@@ -33,10 +33,9 @@ setup(
         'dev': required_dev
     },
     classifiers=[
-        "iCHEF :: Private",
-        "Development Status :: 1 - Planning",
+        "Development Status :: 2 - Pre-Alpha",
         "Topic :: Database :: Front-Ends",
-        "License :: Unlicense",
+        "License :: Apache Software License",
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
