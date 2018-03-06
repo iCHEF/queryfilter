@@ -1,11 +1,11 @@
 from __future__ import absolute_import
 
-from .base import FieldFilter
+from .base import FieldFilter, DictFilterMixin
 from .queryfilter import QueryFilter
 
 
 @QueryFilter.register_type_condition('birthday', 'date_range')
-class BirthdayDateRangeFilter(FieldFilter):
+class BirthdayDateRangeFilter(DictFilterMixin, FieldFilter):
     def split_month_day(self, birth):
         month, day = birth.split("/")
         return int(month), int(day)
@@ -66,7 +66,9 @@ class BirthdayDateRangeFilter(FieldFilter):
                 return smaller_or_equal_to_range_end(month, day)
 
         def by_value_of_dict_field_in_range(dictobj):
-            value = dictobj.get(self.field_name)
+            value = self.get(dictobj, self.field_name)
+            if value is None:
+                return self.false_with_drop_none_else_raise(self.field_name)
             month, day = self.split_month_day(value)
             return in_given_range(month, day)
 

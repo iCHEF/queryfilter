@@ -43,8 +43,9 @@ class QueryFilter(object):
         return decorator
 
     def __init__(self, filter_dict):
-        def _get_filter_from_filter_query_data(data):
-            filter_key = self.get_filter_key(data["type"], data["condition"])
+        def _get_filter_cls_from_filter_query_data(data):
+            filter_key = self.get_filter_key(
+                data["type"], data.get("condition"))
             if filter_key not in self.filters_mapping:
                 raise KeyError("Filter {} does not registered.".format(
                     filter_key)
@@ -52,12 +53,13 @@ class QueryFilter(object):
             filter_cls = self.filters_mapping[filter_key]
             return filter_cls  # clarify the returning
 
-        self.filters = [
-            _get_filter_from_filter_query_data(query_data)(
-                field_name, query_data
-            )
-            for (field_name, query_data) in filter_dict.items()
-        ]
+        self.filters = []
+        for (field_name, query_data) in filter_dict.items():
+            filter_cls = _get_filter_cls_from_filter_query_data(query_data)
+            filter_options = query_data.get("options", {})
+            filter_obj = filter_cls(
+                field_name, query_data, options=filter_options)
+            self.filters.append(filter_obj)
 
     def on_django_query(self, query):
         for filter_instance in self.filters:
