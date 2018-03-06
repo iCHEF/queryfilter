@@ -2,12 +2,12 @@ from __future__ import absolute_import
 from six import add_metaclass
 import abc
 
-from .base import FieldFilter
+from .base import FieldFilter, BaseDictFilter
 from .queryfilter import QueryFilter
 
 
 @add_metaclass(abc.ABCMeta)
-class TextMatchMixin(object):
+class TextMatchMixin(BaseDictFilter, object):
     @abc.abstractmethod
     def _is_value_matched(self, value): pass
 
@@ -15,10 +15,15 @@ class TextMatchMixin(object):
         return self.filter_args["value"]
 
     def on_dicts(self, dicts):
-        return [
-            d for d in dicts
-            if self._is_value_matched(d.get(self.field_name))
-        ]
+        kept_dicts = []
+        for d in dicts:
+            field_value = self.get(d, self.field_name)
+            if field_value is None:
+                self.false_with_drop_none_else_raise(self.field_name)
+                continue
+            if self._is_value_matched(field_value):
+                kept_dicts.append(d)
+        return kept_dicts
 
 
 @QueryFilter.register_type_condition('string', 'equals')

@@ -1,11 +1,11 @@
 from __future__ import absolute_import
 
-from .base import FieldFilter
+from .base import FieldFilter, BaseDictFilter
 from .queryfilter import QueryFilter
 
 
 @QueryFilter.register_type_condition('number')
-class NumberRangeFilter(FieldFilter):
+class NumberRangeFilter(BaseDictFilter, FieldFilter):
     def get_query_range(self):
         min_value = self.filter_args.get("min")
         max_value = self.filter_args.get("max")
@@ -15,10 +15,13 @@ class NumberRangeFilter(FieldFilter):
         (min_value, max_value) = self.get_query_range()
 
         def is_value_matched(field_value):
-            return (not min_value or field_value >= min_value) and \
-                   (not max_value or field_value <= max_value)
+            if field_value is None:
+                return self.false_with_drop_none_else_raise(self.field_name)
+
+            return (min_value is None or field_value >= min_value) and \
+                   (max_value is None or field_value <= max_value)
 
         return [
             d for d in dicts
-            if is_value_matched(d.get(self.field_name))
+            if is_value_matched(self.get(d, self.field_name))
         ]

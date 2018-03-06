@@ -1,12 +1,26 @@
 import abc
 
+from .exceptions import (
+    FilterOnNoneValueError,
+    FieldNotFound
+)
+
 
 class FieldFilter(object):
     __metaclass__ = abc.ABCMeta
 
-    def __init__(self, field_name, filter_args):
+    def __init__(
+            self,
+            field_name,
+            filter_args,
+            options=None
+    ):
         self.field_name = field_name
         self.filter_args = filter_args
+        default_filter_options = {
+            "drop_none": True
+        }
+        self.options = options or default_filter_options
 
     # TODO: Put it back when we need it
     # @abc.abstractmethod
@@ -21,3 +35,19 @@ class FieldFilter(object):
     @abc.abstractmethod
     def on_dicts(self, dicts):
         pass
+
+    def false_with_drop_none_else_raise(self, field_name):
+        if self.options["drop_none"]:
+            return False
+        raise FilterOnNoneValueError(field_name)
+
+
+class BaseDictFilter(object):
+    def __init__(self, *args, **kwargs):
+        super(BaseDictFilter, self).__init__(*args, **kwargs)
+        self.none_as_missing_key = kwargs.get("none_as_missing_key", True)
+
+    def get(self, dictobj, field_name):
+        if (field_name not in dictobj) and (not self.none_as_missing_key):
+            raise FieldNotFound(field_name)
+        return dictobj.get(field_name)
