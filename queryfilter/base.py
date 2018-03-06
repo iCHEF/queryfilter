@@ -17,10 +17,11 @@ class FieldFilter(object):
     ):
         self.field_name = field_name
         self.filter_args = filter_args
-        default_filter_options = {
+        self.options = {
             "drop_none": True
         }
-        self.options = options or default_filter_options
+        passed_in_options = options if options else {}
+        self.options.update(passed_in_options)
 
     # TODO: Put it back when we need it
     # @abc.abstractmethod
