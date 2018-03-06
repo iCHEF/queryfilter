@@ -28,11 +28,13 @@ class TestTextFilter(object):
         query_filter = QueryFilter({
             "name": {
                 "type": "string",
+                "options": {"none_for_missing_field": False},
                 "condition": "contains",
                 "value": "example"
             }
         })
-        assert len(query_filter.on_dicts(dicts)) == 0
+        with pytest.raises(FieldNotFound):
+            query_filter.on_dicts(dicts)
 
     def test_True_drop_none_should_get_no_none_results(self):
         dicts = [
@@ -51,7 +53,7 @@ class TestTextFilter(object):
         })
         assert len(query_filter.on_dicts(dicts)) == 1
 
-    def test_False_drop_none_should_raise_FilterOnNoneValueError(self):
+    def est_False_drop_none_should_raise_FilterOnNoneValueError(self):
         dicts = [
             {"age": None},
             {"age": 1},
