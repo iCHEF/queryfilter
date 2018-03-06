@@ -45,9 +45,9 @@ class FieldFilter(object):
 class BaseDictFilter(object):
     def __init__(self, *args, **kwargs):
         super(BaseDictFilter, self).__init__(*args, **kwargs)
-        options_kwarg = kwargs["options"]
-        none_for_missing_field = options_kwarg.get("none_for_missing_field", True)
-        self.options["none_for_missing_field"] = none_for_missing_field
+        options_kwargs = kwargs["options"]
+        option_kw_value = options_kwargs.get("none_for_missing_field", True)
+        self.options["none_for_missing_field"] = option_kw_value
 
     def get(self, dictobj, field_name):
         if (field_name not in dictobj) and (
