@@ -4,11 +4,9 @@ import pytest
 
 from ..queryfilter import QueryFilter
 from ..exceptions import (
-    FilterOnNoneValueError,
+    FilterOnNoneValue,
     FieldNotFound
 )
-from .. import textfilters
-from .. import numberfilters
 
 
 class TestTextFilter(object):
@@ -53,7 +51,7 @@ class TestTextFilter(object):
         })
         assert len(query_filter.on_dicts(dicts)) == 1
 
-    def est_False_drop_none_should_raise_FilterOnNoneValueError(self):
+    def est_False_drop_none_should_raise_FilterOnNoneValue(self):
         dicts = [
             {"age": None},
             {"age": 1},
@@ -68,5 +66,5 @@ class TestTextFilter(object):
                 "max": 1
             }
         })
-        with pytest.raises(FilterOnNoneValueError):
+        with pytest.raises(FilterOnNoneValue):
             query_filter.on_dicts(dicts)

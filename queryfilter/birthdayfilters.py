@@ -1,11 +1,11 @@
 from __future__ import absolute_import
 
-from .base import FieldFilter, BaseDictFilter
+from .base import FieldFilter, DictFilterMixin
 from .queryfilter import QueryFilter
 
 
 @QueryFilter.register_type_condition('birthday', 'date_range')
-class BirthdayDateRangeFilter(BaseDictFilter, FieldFilter):
+class BirthdayDateRangeFilter(DictFilterMixin, FieldFilter):
     def split_month_day(self, birth):
         month, day = birth.split("/")
         return int(month), int(day)

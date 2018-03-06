@@ -1,7 +1,7 @@
 import abc
 
 from .exceptions import (
-    FilterOnNoneValueError,
+    FilterOnNoneValue,
     FieldNotFound
 )
 
@@ -39,13 +39,13 @@ class FieldFilter(object):
     def false_with_drop_none_else_raise(self, field_name):
         if self.options["drop_none"]:
             return False
-        raise FilterOnNoneValueError(field_name)
+        raise FilterOnNoneValue(field_name)
 
 
-class BaseDictFilter(object):
+class DictFilterMixin(object):
     def __init__(self, *args, **kwargs):
-        super(BaseDictFilter, self).__init__(*args, **kwargs)
-        options_kwargs = kwargs["options"]
+        super(DictFilterMixin, self).__init__(*args, **kwargs)
+        options_kwargs = kwargs.get("options", {})
         option_kw_value = options_kwargs.get("none_for_missing_field", True)
         self.options["none_for_missing_field"] = option_kw_value
 

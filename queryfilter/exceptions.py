@@ -4,9 +4,9 @@ class QueryFilterException(Exception):
     pass
 
 
-class FieldNotFound(Exception):
+class FieldNotFound(QueryFilterException):
     pass
 
 
-class FilterOnNoneValueError(Exception):
+class FilterOnNoneValue(QueryFilterException):
     pass

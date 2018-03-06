@@ -1,11 +1,11 @@
 from __future__ import absolute_import
 
-from .base import FieldFilter, BaseDictFilter
+from .base import FieldFilter, DictFilterMixin
 from .queryfilter import QueryFilter
 
 
 @QueryFilter.register_type_condition('number')
-class NumberRangeFilter(BaseDictFilter, FieldFilter):
+class NumberRangeFilter(DictFilterMixin, FieldFilter):
     def get_query_range(self):
         min_value = self.filter_args.get("min")
         max_value = self.filter_args.get("max")
