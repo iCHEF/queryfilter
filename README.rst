@@ -16,6 +16,7 @@ Installation
 ============
 
 .. code-block::
+
   pip install queryfilter
 
 
