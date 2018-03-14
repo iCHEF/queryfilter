@@ -70,7 +70,7 @@ class DictFilterMixin(object):
             if not dictobj:
                 # Point to which level doesn't exist exactly
                 return handle_missing_field(
-                    "__".join(level_field_names[:index+1])
+                    "__".join(parent_field_names[:index+1])
                 )
         if final_field_name not in dictobj:
             return handle_missing_field(field_name)
