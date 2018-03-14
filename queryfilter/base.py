@@ -54,4 +54,10 @@ class DictFilterMixin(object):
         if (field_name not in dictobj) and (
                 not self.options["none_for_missing_field"]):
             raise FieldNotFound(field_name)
-        return dictobj.get(field_name)
+
+        # To support access key like user__name__phone
+        field_value = dictobj
+        for field_key in field_name.split("__"):
+            field_value = field_value.get(field_key)
+
+        return field_value
