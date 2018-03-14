@@ -51,13 +51,27 @@ class DictFilterMixin(object):
         self.options["none_for_missing_field"] = option_kw_value
 
     def get(self, dictobj, field_name):
-        if (field_name not in dictobj) and (
-                not self.options["none_for_missing_field"]):
-            raise FieldNotFound(field_name)
+        def handle_missing_field(missing_field_name):
+            if self.options["none_for_missing_field"]:
+                return None
+            raise FieldNotFound(missing_field_name)
+
+        if not field_name:
+            return handle_missing_field(field_name)
 
         # To support access key like user__name__phone
         level_field_names = field_name.split("__")
+
         final_field_name = level_field_names[-1]
-        for parent_field_name in level_field_names[:-1]:
-            dictobj = dictobj.get(parent_field_name, {})
+        parent_field_names = level_field_names[:-1]
+
+        for index, parent_field_name in enumerate(parent_field_names):
+            dictobj = dictobj.get(parent_field_name)
+            if not dictobj:
+                # Point to which level doesn't exist exactly
+                return handle_missing_field(
+                    "__".join(level_field_names[:index+1])
+                )
+        if final_field_name not in dictobj:
+            return handle_missing_field(field_name)
         return dictobj.get(final_field_name)
