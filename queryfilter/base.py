@@ -56,8 +56,8 @@ class DictFilterMixin(object):
             raise FieldNotFound(field_name)
 
         # To support access key like user__name__phone
-        field_value = dictobj
-        for field_key in field_name.split("__"):
-            field_value = field_value.get(field_key)
-
-        return field_value
+        level_field_names = field_name.split("__")
+        final_field_name = level_field_names[-1]
+        for parent_field_name in level_field_names[:-1]:
+            dictobj = dictobj.get(parent_field_name, {})
+        return dictobj.get(final_field_name)
