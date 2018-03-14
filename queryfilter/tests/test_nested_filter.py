@@ -29,4 +29,3 @@ class TestNestedFiler(object):
             "value": text_not_match
         })
         assert len(text_filter.on_dicts(self.dicts)) == 0
-
