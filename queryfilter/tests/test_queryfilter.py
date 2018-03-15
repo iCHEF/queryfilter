@@ -5,7 +5,8 @@ import pytest
 from ..queryfilter import QueryFilter
 from ..exceptions import (
     FilterOnNoneValue,
-    FieldNotFound
+    FieldNotFound,
+    UnassignedFieldName
 )
 
 
@@ -51,7 +52,7 @@ class TestTextFilter(object):
         })
         assert len(query_filter.on_dicts(dicts)) == 1
 
-    def est_False_drop_none_should_raise_FilterOnNoneValue(self):
+    def test_False_drop_none_should_raise_FilterOnNoneValue(self):
         dicts = [
             {"age": None},
             {"age": 1},
@@ -68,3 +69,11 @@ class TestTextFilter(object):
         })
         with pytest.raises(FilterOnNoneValue):
             query_filter.on_dicts(dicts)
+
+    def test_create_queryfilter_without_fieldname_should_fail(self):
+        with pytest.raises(UnassignedFieldName):
+            QueryFilter({
+                None: {
+                    "type": "number"
+                }
+            })
