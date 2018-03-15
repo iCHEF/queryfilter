@@ -41,24 +41,11 @@ class TestNestedFiler(object):
         })
         assert len(text_filter.on_dicts(self.dicts)) == 0
 
-    def test_none_as_field_should_work_as_well(self):
-        text_filter = TextFullyMatchedFilter(None, {
-            "value": self.text_to_test
-        })
-        assert len(text_filter.on_dicts(self.dicts)) == 0
-
     def test_key_not_exist_should_work_as_well(self):
         text_filter = TextFullyMatchedFilter(self.field_name_to_test, {
             "value": self.text_to_test
         })
         assert len(text_filter.on_dicts({})) == 0
-
-    def test_none_as_field_should_raise_with_option(self):
-        text_filter = TextFullyMatchedFilter(None, {
-            "value": self.text_to_test,
-        }, options={"none_for_missing_field": False})
-        with pytest.raises(FieldNotFound):
-            text_filter.on_dicts(self.dicts)
 
     def test_key_not_exist_should_raise_with_option(self):
         text_filter = TextFullyMatchedFilter(self.field_name_to_test, {

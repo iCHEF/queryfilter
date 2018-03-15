@@ -2,7 +2,8 @@ import abc
 
 from .exceptions import (
     FilterOnNoneValue,
-    FieldNotFound
+    FieldNotFound,
+    UnassignedFieldName
 )
 
 
@@ -15,6 +16,9 @@ class FieldFilter(object):
             filter_args,
             options=None
     ):
+        if not field_name:
+            raise UnassignedFieldName(self.__class__.__name__)
+
         self.field_name = field_name
         self.filter_args = filter_args
         self.options = {
@@ -56,22 +60,19 @@ class DictFilterMixin(object):
                 return None
             raise FieldNotFound(missing_field_name)
 
-        if not field_name:
-            return handle_missing_field(field_name)
+        def get_node_from_dict(node, node_key_list, iterated_key_list=None):
+            if not iterated_key_list:
+                iterated_key_list = []
+            if node is None:
+                return handle_missing_field("__".join(iterated_key_list))
+            if len(node_key_list) == 0:
+                return node
+            node_key = node_key_list.pop(0)
+            node = node.get(node_key)
+            return get_node_from_dict(
+                node, node_key_list, iterated_key_list.append(node_key)
+            )
 
         # To support access key like user__name__phone
-        level_field_names = field_name.split("__")
-
-        final_field_name = level_field_names[-1]
-        parent_field_names = level_field_names[:-1]
-
-        for index, parent_field_name in enumerate(parent_field_names):
-            dictobj = dictobj.get(parent_field_name)
-            if not dictobj:
-                # Point to which level doesn't exist exactly
-                return handle_missing_field(
-                    "__".join(parent_field_names[:index+1])
-                )
-        if final_field_name not in dictobj:
-            return handle_missing_field(field_name)
-        return dictobj.get(final_field_name)
+        dict_keys = field_name.split("__")
+        return get_node_from_dict(dictobj, dict_keys)
