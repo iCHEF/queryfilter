@@ -10,3 +10,7 @@ class FieldNotFound(QueryFilterException):
 
 class FilterOnNoneValue(QueryFilterException):
     pass
+
+
+class UnassignedFieldName(QueryFilterException):
+    pass
