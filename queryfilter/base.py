@@ -16,7 +16,7 @@ class FieldFilter(object):
             filter_args,
             options=None
     ):
-        if not field_name:
+        if field_name is None:
             raise UnassignedFieldName(self.__class__.__name__)
 
         self.field_name = field_name
