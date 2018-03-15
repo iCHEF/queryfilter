@@ -74,5 +74,6 @@ class DictFilterMixin(object):
             )
 
         # To support access key like user__name__phone
+        # [field_name] will never be None which defended by UnassignedFieldName
         dict_keys = field_name.split("__")
         return get_node_from_dict(dictobj, dict_keys)
