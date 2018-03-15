@@ -60,17 +60,17 @@ class DictFilterMixin(object):
                 return None
             raise FieldNotFound(missing_field_name)
 
-        def get_node_from_dict(node, node_key_list, iterated_key_list=None):
+        def get_node_from_dict(node, keys_to_iterate, iterated_key_list=None):
             if not iterated_key_list:
                 iterated_key_list = []
             if node is None:
                 return handle_missing_field("__".join(iterated_key_list))
-            if len(node_key_list) == 0:
+            if len(keys_to_iterate) == 0:
                 return node
-            node_key = node_key_list.pop(0)
+            node_key = keys_to_iterate.pop(0)
             node = node.get(node_key)
             return get_node_from_dict(
-                node, node_key_list, iterated_key_list.append(node_key)
+                node, keys_to_iterate, iterated_key_list.append(node_key)
             )
 
         # To support access key like user__name__phone
