@@ -15,7 +15,9 @@ class TextFilterQueryObject(graphene.InputObjectType):
         default_value="string",
         description=TYPE_FIELD_DESC
     )
-    condition = graphene.Field(TextFilterType)
+    condition = graphene.Field(
+        TextFilterType, default_value=TextFilterType.EQUALS.value
+    )
     value = graphene.String(description="text to query", required=True)
 
 
