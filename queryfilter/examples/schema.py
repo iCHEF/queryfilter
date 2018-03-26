@@ -10,7 +10,7 @@ from queryfilter.schema import (
 
 class KeyCanBeAccessedAsAttributes(dict):
     """
-    Allow graphene to access dict value directly. (xx.a instead of xx.get("a") or xx["a"])
+    Allow graphene to access dict value directly. 
     """
     def __init__(self, *args, **kwargs):
         super(KeyCanBeAccessedAsAttributes, self).__init__(*args, **kwargs)
