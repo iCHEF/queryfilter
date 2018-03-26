@@ -4,7 +4,7 @@ from queryfilter import QueryFilter
 
 from queryfilter.schema import (
     TextFilterQueryObject, NumberRangeFilterQueryObject,
-    SelectStringFilterQueryObject
+    SelectFloatFilterQueryObject
 )
 
 
@@ -17,7 +17,7 @@ class ExampleDataSchema(graphene.ObjectType):
 class ExampleQueryFilter(graphene.ObjectType):
     name = TextFilterQueryObject()
     price = NumberRangeFilterQueryObject()
-    type = SelectStringFilterQueryObject()
+    type = SelectFloatFilterQueryObject()
 
 
 class ExampleSchemaWithFilter(graphene.ObjectType):
