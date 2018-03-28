@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 from graphene.test import Client
 
-from queryfilter.examples.schema import EXAMPLE_DATA, example_schema
+from examples.schema import EXAMPLE_DATA, example_schema
 
 
 class TestGraphQLSchema(object):
