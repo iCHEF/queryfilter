@@ -11,6 +11,12 @@ from .selectfilters import SelectFilter
 from .numberfilters import NumberRangeFilter
 from .birthdayfilters import BirthdayDateRangeFilter
 
+from .schemas import (
+    TextFilterQueryType, NumberRangeFilterQueryType,
+    SelectStringFilterQueryType, SelectFloatFilterQueryType,
+    BirthFilterQueryType
+)
+
 __all__ = [
     # Main interface
     'QueryFilter',
@@ -26,4 +32,11 @@ __all__ = [
     'SelectFilter',
     'NumberRangeFilter',
     'BirthdayDateRangeFilter',
+
+    # Default GraphQL schemas
+    'TextFilterQueryType',
+    'NumberRangeFilterQueryType',
+    'SelectStringFilterQueryType',
+    'SelectFloatFilterQueryType',
+    'BirthFilterQueryType'
 ]
