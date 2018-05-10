@@ -11,7 +11,8 @@ required_dev = [
     "pytest-cov",
     "flake8",
     "pytest-flake8",
-    "tox"
+    "tox",
+    "django<2.0",
 ]
 
 
@@ -28,7 +29,7 @@ setup(
     package_data={
         "": ["*.pyi", "*.rst", "*.md"],
     },
-    install_requires=["graphene==2.0"],
+    install_requires=["graphene>=2.0"],
     setup_requires=["pytest-runner"],
     extras_require={
         'dev': required_dev
