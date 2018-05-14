@@ -29,7 +29,7 @@ setup(
     package_data={
         "": ["*.pyi", "*.rst", "*.md"],
     },
-    install_requires=["graphene~=2.0.1"],
+    install_requires=["graphene~=2.0.1", "pathlib2"],
     setup_requires=["pytest-runner"],
     extras_require={
         'dev': required_dev
