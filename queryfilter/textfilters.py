@@ -50,7 +50,6 @@ class TextPartialMatchedFilter(DjangoQueryFilterMixin, TextMatchMixin, FieldFilt
         query_parameter = {
             self.field_name + "__contains":self.filter_args['value']
         }
-
         return queryset.filter(**query_parameter)
 
 

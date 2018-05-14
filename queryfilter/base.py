@@ -53,9 +53,9 @@ class DjangoQueryFilterMixin(object):
     def on_django_query(self, queryset):
         from django.core.exceptions import FieldError
         try:
-            self.do_filter(queryset)
+            return self.do_filter(queryset)
         except FieldError as e:
-            if self.options["none_for_missing_field"]:
+            if self.options.get("none_for_missing_field"):
                 return queryset.none()
             else:
                 raise FieldNotFound(e.message)
