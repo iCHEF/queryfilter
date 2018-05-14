@@ -64,7 +64,7 @@ class DjangoQueryFilterMixin(object):
                 raise FieldNotFound(e.message)
 
     @abc.abstractmethod
-    def do_filter(self, dicts):
+    def do_filter(self, queryset):
         pass
 
 

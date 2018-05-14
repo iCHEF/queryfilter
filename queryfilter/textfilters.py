@@ -28,13 +28,13 @@ class TextFullyMatchedFilter(DjangoQueryFilterMixin, TextMatchMixin, FieldFilter
     def _is_value_matched(self, value):
         return bool(value == self.get_query_value())
 
-    def do_filter(self, dicts):
+    def do_filter(self, queryset):
 
         query = {
            self.field_name:self.filter_args['value']
         }
 
-        return query.filter(**query)
+        return queryset.filter(**query)
 
 
 @QueryFilter.register_type_condition('string', 'contains')
@@ -42,13 +42,13 @@ class TextPartialMatchedFilter(DjangoQueryFilterMixin, TextMatchMixin, FieldFilt
     def _is_value_matched(self, value):
         return bool(self.get_query_value() in value)
 
-    def do_filter(self, query):
+    def do_filter(self, queryset):
 
         query_parameter = {
             self.field_name + "__contains":self.filter_args['value']
         }
 
-        return query.filter(**query_parameter)
+        return queryset.filter(**query_parameter)
 
 
 @QueryFilter.register_type_condition('string', 'starts_with')
