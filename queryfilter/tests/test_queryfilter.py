@@ -1,18 +1,5 @@
 from __future__ import absolute_import
 
-import os
-import sys
-
-from pathlib2 import Path
-project_path = Path(__file__).parent.parent.parent/"test_project"
-sys.path.append(str(project_path))
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "test_project.settings")
-
-
-import django
-django.setup()
-
 import pytest
 from django.test import TestCase
 
