@@ -11,6 +11,9 @@ class TextMatchMixin(DictFilterMixin):
     @abc.abstractmethod
     def _is_value_matched(self, value): pass
 
+    def get_query_value(self):
+        return self.filter_args["value"]
+
     def on_dicts(self, dicts):
         kept_dicts = []
         for d in dicts:

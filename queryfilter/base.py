@@ -46,9 +46,6 @@ class FieldFilter(object):
             return False
         raise FilterOnNoneValue(field_name)
 
-    def get_query_value(self):
-        return self.filter_args["value"]
-
 
 class DjangoQueryFilterMixin(object):
     __metaclass__ = abc.ABCMeta
