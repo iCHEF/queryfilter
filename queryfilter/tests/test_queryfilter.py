@@ -1,7 +1,22 @@
 from __future__ import absolute_import
 
-import pytest
+import os
+import sys
 
+from pathlib2 import Path
+project_path = Path(__file__).parent.parent.parent/"test_project"
+sys.path.append(str(project_path))
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "test_project.settings")
+
+
+import django
+django.setup()
+
+import pytest
+from django.test import TestCase
+
+from test_app.models import Data
 from ..queryfilter import QueryFilter
 from ..exceptions import (
     FilterOnNoneValue,
@@ -10,9 +25,12 @@ from ..exceptions import (
 )
 
 
-class TestTextFilter(object):
+class TestTextFilter(TestCase):
     def test_simple_query_filter(self):
         dicts = [{"name": "name_example"}]
+
+        Data.objects.create(name='name_example')
+
         query_filter = QueryFilter({
             "name": {
                 "type": "string",
@@ -21,6 +39,7 @@ class TestTextFilter(object):
             }
         })
         assert len(query_filter.on_dicts(dicts)) == 1
+        assert len(query_filter.on_django_query(Data.objects.all())) == 1
 
     def test_simple_query_filter_with_field_not_found(self):
         dicts = [{"address": "address_example"}]
