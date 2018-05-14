@@ -12,7 +12,7 @@ required_dev = [
     "flake8",
     "pytest-flake8",
     "tox",
-    "django<2.0",
+    "django",
 ]
 
 
