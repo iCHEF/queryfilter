@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from six import add_metaclass
 import abc
 
-from .base import FieldFilter, DictFilterMixin
+from .base import FieldFilter, DictFilterMixin, DjangoQueryFilterMixin
 from .queryfilter import QueryFilter
 
 
@@ -10,9 +10,6 @@ from .queryfilter import QueryFilter
 class TextMatchMixin(DictFilterMixin):
     @abc.abstractmethod
     def _is_value_matched(self, value): pass
-
-    def get_query_value(self):
-        return self.filter_args["value"]
 
     def on_dicts(self, dicts):
         kept_dicts = []
@@ -27,15 +24,31 @@ class TextMatchMixin(DictFilterMixin):
 
 
 @QueryFilter.register_type_condition('string', 'equals')
-class TextFullyMatchedFilter(TextMatchMixin, FieldFilter):
+class TextFullyMatchedFilter(DjangoQueryFilterMixin, TextMatchMixin, FieldFilter):
     def _is_value_matched(self, value):
         return bool(value == self.get_query_value())
 
+    def do_filter(self, dicts):
+
+        query = {
+           self.field_name:self.filter_args['value']
+        }
+
+        return query.filter(**query)
+
 
 @QueryFilter.register_type_condition('string', 'contains')
-class TextPartialMatchedFilter(TextMatchMixin, FieldFilter):
+class TextPartialMatchedFilter(DjangoQueryFilterMixin, TextMatchMixin, FieldFilter):
     def _is_value_matched(self, value):
         return bool(self.get_query_value() in value)
+
+    def do_filter(self, query):
+
+        query_parameter = {
+            self.field_name + "__contains":self.filter_args['value']
+        }
+
+        return query.filter(**query_parameter)
 
 
 @QueryFilter.register_type_condition('string', 'starts_with')

@@ -20,3 +20,8 @@ class Data(models.Model):
     price = models.IntegerField(default=10)
     type = models.IntegerField(default=0)
     age = models.IntegerField(default=22)
+    address = models.TextField(default="")
+
+
+class DataWithoutName(models.Model):
+    address = models.TextField(default="")
