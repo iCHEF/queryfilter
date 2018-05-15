@@ -1,4 +1,5 @@
 import abc
+import six
 
 from .exceptions import (
     FilterOnNoneValue,
@@ -58,7 +59,7 @@ class DjangoQueryFilterMixin(object):
             if self.options.get("none_for_missing_field"):
                 return queryset.none()
             else:
-                raise FieldNotFound(e.message)
+                raise FieldNotFound(six.text_type(e))
 
     @abc.abstractmethod
     def do_filter(self, queryset):
