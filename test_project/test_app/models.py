@@ -15,6 +15,7 @@ get_user_from_request
     "birthday": "05/20"
 '''
 
+
 class Data(models.Model):
     name = models.TextField(default="")
     price = models.IntegerField(default=10)

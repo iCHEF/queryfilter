@@ -34,7 +34,7 @@ class TextFullyMatchedFilter(DjangoQueryFilterMixin, TextMatchMixin, FieldFilter
     def do_filter(self, queryset):
 
         query = {
-           self.field_name:self.filter_args['value']
+           self.field_name: self.filter_args['value']
         }
 
         return queryset.filter(**query)
@@ -48,7 +48,7 @@ class TextPartialMatchedFilter(DjangoQueryFilterMixin, TextMatchMixin, FieldFilt
     def do_filter(self, queryset):
 
         query_parameter = {
-            self.field_name + "__contains":self.filter_args['value']
+            self.field_name + "__contains": self.filter_args['value']
         }
         return queryset.filter(**query_parameter)
 
