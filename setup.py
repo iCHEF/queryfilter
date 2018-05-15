@@ -11,13 +11,14 @@ required_dev = [
     "pytest-cov",
     "flake8",
     "pytest-flake8",
-    "tox"
+    "tox",
+    "django",
 ]
 
 
 setup(
     name="queryfilter",
-    version="0.3.1",
+    version="0.3.2",
     description=("Allow same query interface to be shared between Django ORM,"
                  "SQLAlchemy, and GraphQL backend."),
     long_description=open(os.path.join(source_root, "README.rst")).read(),

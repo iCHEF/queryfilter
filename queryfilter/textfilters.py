@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from six import add_metaclass
 import abc
 
-from .base import FieldFilter, DictFilterMixin
+from .base import FieldFilter, DictFilterMixin, DjangoQueryFilterMixin
 from .queryfilter import QueryFilter
 
 
@@ -27,15 +27,30 @@ class TextMatchMixin(DictFilterMixin):
 
 
 @QueryFilter.register_type_condition('string', 'equals')
-class TextFullyMatchedFilter(TextMatchMixin, FieldFilter):
+class TextFullyMatchedFilter(DjangoQueryFilterMixin, TextMatchMixin, FieldFilter):
     def _is_value_matched(self, value):
         return bool(value == self.get_query_value())
 
+    def do_filter(self, queryset):
+
+        query = {
+           self.field_name: self.filter_args['value']
+        }
+
+        return queryset.filter(**query)
+
 
 @QueryFilter.register_type_condition('string', 'contains')
-class TextPartialMatchedFilter(TextMatchMixin, FieldFilter):
+class TextPartialMatchedFilter(DjangoQueryFilterMixin, TextMatchMixin, FieldFilter):
     def _is_value_matched(self, value):
         return bool(self.get_query_value() in value)
+
+    def do_filter(self, queryset):
+
+        query_parameter = {
+            self.field_name + "__contains": self.filter_args['value']
+        }
+        return queryset.filter(**query_parameter)
 
 
 @QueryFilter.register_type_condition('string', 'starts_with')

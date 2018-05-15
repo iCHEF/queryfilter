@@ -1,7 +1,9 @@
 from __future__ import absolute_import
 
 import pytest
+from django.test import TestCase
 
+from test_app.models import Data, DataWithoutName
 from ..queryfilter import QueryFilter
 from ..exceptions import (
     FilterOnNoneValue,
@@ -10,9 +12,11 @@ from ..exceptions import (
 )
 
 
-class TestTextFilter(object):
+class TestTextFilter(TestCase):
     def test_simple_query_filter(self):
         dicts = [{"name": "name_example"}]
+        Data.objects.create(name='name_example')
+
         query_filter = QueryFilter({
             "name": {
                 "type": "string",
@@ -21,9 +25,12 @@ class TestTextFilter(object):
             }
         })
         assert len(query_filter.on_dicts(dicts)) == 1
+        assert len(query_filter.on_django_query(Data.objects.all())) == 1
 
     def test_simple_query_filter_with_field_not_found(self):
         dicts = [{"address": "address_example"}]
+        DataWithoutName.objects.create(address='address_example')
+
         query_filter = QueryFilter({
             "name": {
                 "type": "string",
@@ -34,6 +41,9 @@ class TestTextFilter(object):
         })
         with pytest.raises(FieldNotFound):
             query_filter.on_dicts(dicts)
+
+        with pytest.raises(FieldNotFound):
+            query_filter.on_django_query(DataWithoutName.objects.all())
 
     def test_True_drop_none_should_get_no_none_results(self):
         dicts = [
