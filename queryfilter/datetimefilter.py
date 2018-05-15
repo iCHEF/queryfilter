@@ -5,12 +5,12 @@ import datetime
 from dateutil import parser
 import pytz
 
-from .base import FieldFilter, DictFilterMixin
+from .base import FieldFilter, DictFilterMixin, DjangoQueryFilterMixin
 from .queryfilter import QueryFilter
 
 
 @QueryFilter.register_type_condition('datetime', 'datetime_range')
-class DatetimeRangeFilter(DictFilterMixin, FieldFilter):
+class DatetimeRangeFilter(DjangoQueryFilterMixin, DictFilterMixin, FieldFilter):
 
     @property
     def start(self):
@@ -32,7 +32,7 @@ class DatetimeRangeFilter(DictFilterMixin, FieldFilter):
 
         return list(filter(in_range, dicts))
 
-    def on_django_query(self, queryset):
+    def do_filter(self, queryset):
         query_dict = {
             "{}__gte".format(self.field_name): self.start,
             "{}__lte".format(self.field_name): self.end,
