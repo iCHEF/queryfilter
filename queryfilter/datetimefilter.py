@@ -10,12 +10,17 @@ from .queryfilter import QueryFilter
 
 
 @QueryFilter.register_type_condition('datetime', 'datetime_range')
-class DateRangeFilter(DictFilterMixin, FieldFilter):
+class DatetimeRangeFilter(DictFilterMixin, FieldFilter):
+
+    @property
+    def start(self):
+        return get_start(self.filter_args.get("start"))
+
+    @property
+    def end(self):
+        return get_end(self.filter_args.get("end"))
 
     def on_dicts(self, dicts):
-
-        range_start = get_start(self.filter_args.get("start"))
-        range_end = get_end(self.filter_args.get("end"))
 
         def in_range(datum):
             datetime_string = self.get(datum, self.field_name)
@@ -23,9 +28,16 @@ class DateRangeFilter(DictFilterMixin, FieldFilter):
                 to_compare = datetime_string
             else:
                 to_compare = parse(datetime_string)
-            return range_start <= to_compare <= range_end
+            return self.start <= to_compare <= self.end
 
         return list(filter(in_range, dicts))
+
+    def on_django_query(self, queryset):
+        query_dict = {
+            "{}__gte".format(self.field_name): self.start,
+            "{}__lte".format(self.field_name): self.end,
+        }
+        return queryset.filter(**query_dict)
 
 
 min_datetime = datetime.datetime.min.replace(tzinfo=pytz.utc)
