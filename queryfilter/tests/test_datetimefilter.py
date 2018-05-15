@@ -7,7 +7,7 @@ from ..datetimefilter import DateRangeFilter
 ordered_triple_test_date_set = (
     ("2016-12-29T00:00:00+08:00", "2016-12-30T00:00:00+08:0", "2016-12-31T00:00:00+08:0"),  # in three day
     ("2016-12-31T00:00:00+08:00", "2016-12-31T01:00:00+08:0", "2016-12-31T02:00:00+08:0"),  # in one day
-    ("2016-12-31T00:00:00+08:00", "2017-12-31T01:00:00+08:0", "2018-12-31T02:00:00+08:0"),  # across year
+    ("2016-12-31T23:00:00+08:00", "2017-01-01T00:00:00-08:0", "2018-12-31T02:00:00+08:0"),  # across year
 )
 
 date_time_parametrize = pytest.mark.parametrize("dates, test_data",
