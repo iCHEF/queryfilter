@@ -26,3 +26,7 @@ class Data(models.Model):
 
 class DataWithoutName(models.Model):
     address = models.TextField(default="")
+
+
+class DatetimeFilterTestingModel(models.Model):
+    datetime = models.DateTimeField()
