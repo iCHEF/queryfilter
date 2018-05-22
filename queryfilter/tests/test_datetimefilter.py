@@ -50,12 +50,25 @@ class TestDateRangeFilter(object):
     @date_time_parametrize
     def test_out_of_range(self, dates, test_data, queryset):
 
-        date = dates[0]
-        date = "1990" + date[4:]
+        earliest = dates[0]
+        beyond_earliest = "1990" + earliest[4:]
 
         date_filter = DatetimeRangeFilter(FIELD_NAME, {
-            "start": date,
-            "end": date,
+            "start": beyond_earliest,
+            "end": beyond_earliest,
+        })
+        results_after_filter = date_filter.on_dicts(test_data)
+        assert len(results_after_filter) == 0
+
+        results_after_filter = date_filter.on_django_query(queryset)
+        assert len(results_after_filter) == 0
+
+        oldest = dates[2]
+        beyond_oldest = "2500" + oldest[4:]
+
+        date_filter = DatetimeRangeFilter(FIELD_NAME, {
+            "start": beyond_oldest,
+            "end": beyond_oldest,
         })
         results_after_filter = date_filter.on_dicts(test_data)
         assert len(results_after_filter) == 0
