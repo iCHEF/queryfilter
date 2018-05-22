@@ -28,16 +28,32 @@ class DatetimeRangeFilter(DjangoQueryFilterMixin, DictFilterMixin, FieldFilter):
                 to_compare = datetime_string
             else:
                 to_compare = parse(datetime_string)
-            return self.start <= to_compare <= self.end
+
+            hit_in_range = True
+
+            if self.start:
+                hit_in_range = hit_in_range and (self.start <= to_compare)
+
+            if self.end:
+                hit_in_range = hit_in_range and (to_compare <= self.end)
+
+            return hit_in_range
 
         return list(filter(in_range, dicts))
 
     def do_filter(self, queryset):
-        query_dict = {
-            "{}__gte".format(self.field_name): self.start,
-            "{}__lte".format(self.field_name): self.end,
-        }
-        return queryset.filter(**query_dict)
+        query_dict = dict()
+
+        if self.start:
+            query_dict["{}__gte".format(self.field_name)] = self.start
+
+        if self.end:
+            query_dict["{}__lte".format(self.field_name)] = self.end
+
+        if query_dict:
+            return queryset.filter(**query_dict)
+        else:
+            return queryset
 
 
 min_datetime = datetime.datetime.min.replace(tzinfo=pytz.utc)
@@ -46,13 +62,13 @@ max_datetime = datetime.datetime.max.replace(tzinfo=pytz.utc)
 
 def get_start(start_date_str):
     if not start_date_str:
-        return min_datetime
+        return None
     return parse(start_date_str)
 
 
 def get_end(end_date_str):
     if not end_date_str:
-        return max_datetime
+        return None
     return parse(end_date_str)
 
 
