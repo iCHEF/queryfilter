@@ -29,15 +29,13 @@ class DatetimeRangeFilter(DjangoQueryFilterMixin, DictFilterMixin, FieldFilter):
             else:
                 to_compare = parse(datetime_string)
 
-            hit_in_range = True
+            if self.start and (to_compare < self.start):
+                return False
 
-            if self.start:
-                hit_in_range = hit_in_range and (self.start <= to_compare)
+            if self.end and (self.end < to_compare):
+                return False
 
-            if self.end:
-                hit_in_range = hit_in_range and (to_compare <= self.end)
-
-            return hit_in_range
+            return True
 
         return list(filter(in_range, dicts))
 
