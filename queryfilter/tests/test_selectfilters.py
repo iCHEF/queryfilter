@@ -26,35 +26,36 @@ class TestSelectFilter(object):
         return Data.objects.all()
 
     def _assert_filtered_data_length(self, filter, length):
+        
         assert len(filter.on_dicts(self.dicts)) == length
         assert len(filter.on_django_query(self.queryset)) == length
 
     def test_value_is_selected(self):
 
-        options = [1]
+        choices = [1]
 
         text_filter = SelectFilter(FIELD_NAME, {
-            "values": options
+            "values": choices
         })
 
         self._assert_filtered_data_length(text_filter, 1)
 
     def test_value_is_one_of_selections(self):
 
-        options = [1, 2, 3, 4]
+        choices = [1, 2, 3, 4]
 
         text_filter = SelectFilter(FIELD_NAME, {
-            "values": options
+            "values": choices
         })
 
         self._assert_filtered_data_length(text_filter, 1)
 
     def test_value_not_selected(self):
 
-        options = [2, 3, 4]
+        choices = [2, 3, 4]
 
         text_filter = SelectFilter(FIELD_NAME, {
-            "values": options
+            "values": choices
         })
 
         self._assert_filtered_data_length(text_filter, 0)
