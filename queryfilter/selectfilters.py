@@ -26,4 +26,3 @@ class SelectFilter(DjangoQueryFilterMixin, FieldFilter):
         query = {u"{field_name}__in".format(field_name=self.field_name): self.choices}
 
         return queryset.filter(**query)
-

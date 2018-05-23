@@ -26,7 +26,7 @@ class TestSelectFilter(object):
         return Data.objects.all()
 
     def _assert_filtered_data_length(self, filter, length):
-        
+
         assert len(filter.on_dicts(self.dicts)) == length
         assert len(filter.on_django_query(self.queryset)) == length
 
@@ -61,7 +61,7 @@ class TestSelectFilter(object):
         self._assert_filtered_data_length(text_filter, 0)
 
     def test_nothing_been_selected(self):
-        
+
         text_filter = SelectFilter(FIELD_NAME, {
             "values": []
         })
@@ -70,5 +70,5 @@ class TestSelectFilter(object):
 
     def test_nothing_been_passed_to_filter(self):
         text_filter = SelectFilter(FIELD_NAME, {})
-        
+
         self._assert_filtered_data_length(text_filter, 0)
