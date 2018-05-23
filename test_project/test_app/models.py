@@ -17,11 +17,11 @@ get_user_from_request
 
 
 class Data(models.Model):
-    name = models.TextField(default="")
-    price = models.IntegerField(default=10)
-    type = models.IntegerField(default=0)
-    age = models.IntegerField(default=22)
-    address = models.TextField(default="")
+    name = models.TextField(default="", null=True)
+    price = models.IntegerField(default=10, null=True)
+    type = models.IntegerField(default=0, null=True)
+    age = models.IntegerField(default=22, null=True)
+    address = models.TextField(default="", null=True)
 
 
 class DataWithoutName(models.Model):
