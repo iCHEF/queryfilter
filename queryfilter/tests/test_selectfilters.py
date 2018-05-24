@@ -1,5 +1,6 @@
 from __future__ import absolute_import
-import pytest
+
+from queryfilter.tests.base_test_case import FilterTestCaseBase
 from ..selectfilters import SelectFilter
 from test_app.models import Data
 
@@ -7,28 +8,15 @@ from test_app.models import Data
 FIELD_NAME = "type"
 
 
-@pytest.mark.django_db(transaction=True)
-class TestSelectFilter(object):
+class TestSelectFilter(FilterTestCaseBase):
 
-    def setup(self):
-
-        self.dicts = [
+    def get_default_data(self):
+        return [
             {FIELD_NAME: 1}
         ]
 
-        self.queryset = self._save_to_db(self.dicts)
-
-    def _save_to_db(self, data):
-
-        for datum in data:
-            Data.objects.create(**datum)
-
-        return Data.objects.all()
-
-    def _assert_filtered_data_length(self, filter, length):
-
-        assert len(filter.on_dicts(self.dicts)) == length
-        assert len(filter.on_django_query(self.queryset)) == length
+    def get_model_class(self):
+        return Data
 
     def test_value_is_selected(self):
 
@@ -38,7 +26,7 @@ class TestSelectFilter(object):
             "values": choices
         })
 
-        self._assert_filtered_data_length(text_filter, 1)
+        self.assert_filtered_data_length(text_filter, 1)
 
     def test_value_is_one_of_selections(self):
 
@@ -48,7 +36,7 @@ class TestSelectFilter(object):
             "values": choices
         })
 
-        self._assert_filtered_data_length(text_filter, 1)
+        self.assert_filtered_data_length(text_filter, 1)
 
     def test_value_not_selected(self):
 
@@ -58,7 +46,7 @@ class TestSelectFilter(object):
             "values": choices
         })
 
-        self._assert_filtered_data_length(text_filter, 0)
+        self.assert_filtered_data_length(text_filter, 0)
 
     def test_nothing_been_selected(self):
 
@@ -66,9 +54,9 @@ class TestSelectFilter(object):
             "values": []
         })
 
-        self._assert_filtered_data_length(text_filter, 0)
+        self.assert_filtered_data_length(text_filter, 0)
 
     def test_nothing_been_passed_to_filter(self):
         text_filter = SelectFilter(FIELD_NAME, {})
 
-        self._assert_filtered_data_length(text_filter, 0)
+        self.assert_filtered_data_length(text_filter, 0)

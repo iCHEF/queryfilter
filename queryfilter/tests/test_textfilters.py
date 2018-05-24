@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+from test_app.models import Data
 from ..textfilters import (
     TextFullyMatchedFilter, TextPartialMatchedFilter,
     TextStartsWithMatchedFilter, TextEndsWithMatchedFilter
@@ -13,6 +14,19 @@ class TestTextFilterMixin(object):
         self.dicts = [
             {self.field_name_to_test: self.text_to_test}
         ]
+        self.query_set = self._save_to_db(self.dicts)
+
+    def _save_to_db(self, data):
+
+        for datum in data:
+            Data.objects.create(**datum)
+
+        return Data.objects.all()
+
+    def _assert_filtered_data_length(self, filter, length):
+
+        assert len(filter.on_dicts(self.dicts)) == length
+        assert len(filter.on_django_query(self.queryset)) == length
 
 
 class TestTextFullyMatchedFilter(TestTextFilterMixin):
