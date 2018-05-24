@@ -7,20 +7,40 @@ from ..datetimefilter import DatetimeRangeFilter
 
 
 ordered_triple_test_date_set = (
-    ("2016-12-29T00:00:00+08:00", "2016-12-30T00:00:00+08:00", "2016-12-31T00:00:00+08:00"),  # in three day
-    ("2016-12-31T00:00:00+08:00", "2016-12-31T01:00:00+08:0", "2016-12-31T02:00:00+08:00"),  # in one day
-    ("2016-12-31T23:00:00+08:00", "2017-01-01T00:00:00-08:00", "2018-12-31T02:00:00+08:00"),  # across year
 
-    ("2016-12-31T23:00:00", "2017-01-01T00:00:00", "2018-12-31T02:00:00"),  # no time zone
+    (   # in three day
+        "2016-12-29T00:00:00+08:00",
+        "2016-12-30T00:00:00+08:00",
+        "2016-12-31T00:00:00+08:00"
+    ),
+    (   # in one day
+        "2016-12-31T00:00:00+08:00",
+        "2016-12-31T01:00:00+08:0",
+        "2016-12-31T02:00:00+08:00"
+    ),
+    (   # across year
+        "2016-12-31T23:00:00+08:00",
+        "2017-01-01T00:00:00-08:00",
+        "2018-12-31T02:00:00+08:00"
+    ),
+    (   # no time zone
+        "2016-12-31T23:00:00",
+        "2017-01-01T00:00:00",
+        "2018-12-31T02:00:00"
+    ),
 )
 
 
-date_time_parametrize = pytest.mark.parametrize("dates, test_data, queryset",
-                                                zip(ordered_triple_test_date_set,
-                                                    ordered_triple_test_date_set,
-                                                    ordered_triple_test_date_set,
-                                                    ),
-                                                indirect=['test_data', 'queryset'])
+parametrization_data = zip(ordered_triple_test_date_set,
+                           ordered_triple_test_date_set,
+                           ordered_triple_test_date_set,
+                           )
+
+date_time_parametrize = pytest.mark.parametrize(
+    "dates, test_data, queryset",
+    parametrization_data,
+    indirect=['test_data', 'queryset']
+)
 
 
 @pytest.fixture
@@ -77,7 +97,7 @@ class TestDateRangeFilter(object):
         assert len(results_after_filter) == 0
 
     @date_time_parametrize
-    def test_date_matched_with_only_one_time_point(self, dates, test_data, queryset):
+    def test_date_match_only_one_time_point(self, dates, test_data, queryset):
 
         date = dates[1]
 

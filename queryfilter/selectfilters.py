@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
 from .base import FieldFilter, DjangoQueryFilterMixin
 from .queryfilter import QueryFilter
@@ -23,6 +23,8 @@ class SelectFilter(DjangoQueryFilterMixin, FieldFilter):
         if not self.choices:
             return queryset.none()
 
-        query = {u"{field_name}__in".format(field_name=self.field_name): self.choices}
+        query = {
+            self.field_name + "__in": self.choices
+        }
 
         return queryset.filter(**query)

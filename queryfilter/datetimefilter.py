@@ -10,7 +10,8 @@ from .queryfilter import QueryFilter
 
 
 @QueryFilter.register_type_condition('datetime', 'datetime_range')
-class DatetimeRangeFilter(DjangoQueryFilterMixin, DictFilterMixin, FieldFilter):
+class DatetimeRangeFilter(DjangoQueryFilterMixin, DictFilterMixin,
+                          FieldFilter):
 
     @property
     def start(self):
