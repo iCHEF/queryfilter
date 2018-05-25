@@ -72,3 +72,12 @@ class BirthFilterQueryType(graphene.InputObjectType):
     )
     start = graphene.String(default="01/01")
     end = graphene.String(default="12/31")
+
+
+class DatetimeRangeFilterType(graphene.InputObjectType):
+    type = graphene.String(
+        default_value="datetime",
+        description=TYPE_FIELD_DESC
+    )
+    start = graphene.String()
+    end = graphene.String()
