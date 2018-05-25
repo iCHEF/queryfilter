@@ -107,7 +107,7 @@ class TestGraphQLSchema(object):
         query_result = data["something"][0]
         assert query_result.get("birthday") == "05/20"
 
-    def test_birthday_graphql(self):
+    def test_datetime_graphql(self):
         client = Client(example_schema)
         query = '''
             {
