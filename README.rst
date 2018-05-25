@@ -12,6 +12,11 @@ Feature
 - Allow same query interface to be shared between Django ORM, SQLAlchemy, and GraphQL backend.
 
 
+Document
+========
+
+https://github.com/iCHEF/queryfilter/wiki
+
 Installation
 ============
 
@@ -28,6 +33,7 @@ Development
   git clone https://github.com/iCHEF/queryfilter.git
   cd queryfilter
   pip install -e .[dev]
+
 
 
 Tests
