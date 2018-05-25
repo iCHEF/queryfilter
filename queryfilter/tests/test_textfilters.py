@@ -13,7 +13,8 @@ class TextFilterTestBase(FilterTestCaseBase):
     field_name_to_test = "name"
     text_to_test = "name_example"
 
-    def get_model_class(self):
+    @property
+    def model_class(self):
         return Data
 
     def get_default_data(self):

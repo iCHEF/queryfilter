@@ -12,8 +12,8 @@ class TextMatchMixin(DjangoQueryFilterMixin, DictFilterMixin):
     @abc.abstractmethod
     def _is_value_matched(self, value): pass
 
-    @abc.abstractmethod
-    def query_field_suffix(self):
+    @abc.abstractproperty
+    def django_lookup_type(self):
         pass
 
     def get_query_value(self):
@@ -21,8 +21,13 @@ class TextMatchMixin(DjangoQueryFilterMixin, DictFilterMixin):
 
     def do_filter(self, queryset):
 
+        if self.django_lookup_type:
+            lookup_keyword = self.field_name + "__" + self.django_lookup_type
+        else:
+            lookup_keyword = self.field_name
+
         query_parameter = {
-            self.field_name + self.query_field_suffix(): self.get_query_value()
+             lookup_keyword: self.get_query_value()
         }
 
         return queryset.filter(**query_parameter)
@@ -42,7 +47,8 @@ class TextMatchMixin(DjangoQueryFilterMixin, DictFilterMixin):
 @QueryFilter.register_type_condition('string', 'equals')
 class TextFullyMatchedFilter(TextMatchMixin, FieldFilter):
 
-    def query_field_suffix(self):
+    @property
+    def django_lookup_type(self):
         return ""
 
     def _is_value_matched(self, value):
@@ -52,8 +58,9 @@ class TextFullyMatchedFilter(TextMatchMixin, FieldFilter):
 @QueryFilter.register_type_condition('string', 'contains')
 class TextPartialMatchedFilter(TextMatchMixin, FieldFilter):
 
-    def query_field_suffix(self):
-        return "__contains"
+    @property
+    def django_lookup_type(self):
+        return "contains"
 
     def _is_value_matched(self, value):
         return bool(self.get_query_value() in value)
@@ -62,8 +69,9 @@ class TextPartialMatchedFilter(TextMatchMixin, FieldFilter):
 @QueryFilter.register_type_condition('string', 'starts_with')
 class TextStartsWithMatchedFilter(TextMatchMixin, FieldFilter):
 
-    def query_field_suffix(self):
-        return "__startswith"
+    @property
+    def django_lookup_type(self):
+        return "startswith"
 
     def _is_value_matched(self, value):
         return bool(value.startswith(self.get_query_value()))
@@ -72,8 +80,9 @@ class TextStartsWithMatchedFilter(TextMatchMixin, FieldFilter):
 @QueryFilter.register_type_condition('string', 'ends_with')
 class TextEndsWithMatchedFilter(TextMatchMixin, FieldFilter):
 
-    def query_field_suffix(self):
-        return "__endswith"
+    @property
+    def django_lookup_type(self):
+        return "endswith"
 
     def _is_value_matched(self, value):
         return bool(value.endswith(self.get_query_value()))

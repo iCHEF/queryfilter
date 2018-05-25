@@ -15,7 +15,8 @@ class TestSelectFilter(FilterTestCaseBase):
             {FIELD_NAME: 1}
         ]
 
-    def get_model_class(self):
+    @property
+    def model_class(self):
         return Data
 
     def test_value_is_selected(self):

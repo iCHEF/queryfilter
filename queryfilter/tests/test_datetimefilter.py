@@ -6,6 +6,7 @@ from test_app.models import DatetimeFilterTestingModel
 from ..datetimefilter import DatetimeRangeFilter
 
 
+# they are designed to be strictly ordered and used for testing
 ordered_triple_test_date_set = (
 
     (   # in three day

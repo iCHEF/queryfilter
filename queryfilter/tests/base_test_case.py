@@ -9,8 +9,8 @@ class FilterTestCaseBase(TestCase):
         self.dicts = self.get_default_data()
         self.queryset = self._save_to_db(self.dicts)
 
-    @abc.abstractmethod
-    def get_model_class(self):
+    @abc.abstractproperty
+    def model_class(self):
         pass
 
     @abc.abstractmethod
@@ -19,7 +19,7 @@ class FilterTestCaseBase(TestCase):
 
     def _save_to_db(self, data):
 
-        model_class = self.get_model_class()
+        model_class = self.model_class
         for datum in data:
             model_class.objects.create(**datum)
 
