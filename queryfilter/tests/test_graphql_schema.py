@@ -106,3 +106,23 @@ class TestGraphQLSchema(object):
         assert len(data["something"]) == 1
         query_result = data["something"][0]
         assert query_result.get("birthday") == "05/20"
+
+    def test_datetime_graphql(self):
+        client = Client(example_schema)
+        query = '''
+            {
+                something(queryFilter: {
+                    datetime: {
+                        start: "2018-05-25"
+                        end: "2018-05-25"
+                    }
+                }){
+                    datetime
+                }
+            }
+        '''
+        executed = client.execute(query)
+        data = executed["data"]
+        assert len(data["something"]) == 1
+        query_result = data["something"][0]
+        assert query_result.get("datetime") == "2018-05-25"

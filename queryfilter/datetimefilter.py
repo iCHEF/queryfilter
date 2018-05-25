@@ -9,8 +9,9 @@ from .base import FieldFilter, DictFilterMixin, DjangoQueryFilterMixin
 from .queryfilter import QueryFilter
 
 
-@QueryFilter.register_type_condition('datetime', 'datetime_range')
-class DatetimeRangeFilter(DjangoQueryFilterMixin, DictFilterMixin, FieldFilter):
+@QueryFilter.register_type_condition('datetime')
+class DatetimeRangeFilter(DjangoQueryFilterMixin, DictFilterMixin,
+                          FieldFilter):
 
     @property
     def start(self):
