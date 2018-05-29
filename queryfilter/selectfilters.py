@@ -18,7 +18,7 @@ class SelectFilter(DjangoQueryFilterMixin, FieldFilter):
             if d.get(self.field_name) in self.choices
         ]
 
-    def do_filter(self, queryset):
+    def _do_django_query(self, queryset):
 
         if not self.choices:
             return queryset.none()

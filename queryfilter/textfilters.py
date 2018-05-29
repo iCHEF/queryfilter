@@ -19,7 +19,7 @@ class TextMatchMixin(DjangoQueryFilterMixin, DictFilterMixin):
     def get_query_value(self):
         return self.filter_args["value"]
 
-    def do_filter(self, queryset):
+    def _do_django_query(self, queryset):
 
         if self.django_lookup_type:
             lookup_keyword = self.field_name + "__" + self.django_lookup_type

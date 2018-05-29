@@ -40,7 +40,7 @@ class DatetimeRangeFilter(DjangoQueryFilterMixin, DictFilterMixin,
 
         return list(filter(in_range, dicts))
 
-    def do_filter(self, queryset):
+    def _do_django_query(self, queryset):
         query_dict = dict()
 
         if self.start:
