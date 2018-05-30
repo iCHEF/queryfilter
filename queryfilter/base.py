@@ -1,4 +1,5 @@
 import abc
+import six
 
 from .exceptions import (
     FilterOnNoneValue,
@@ -29,7 +30,7 @@ class FieldFilter(object):
 
     # TODO: Put it back when we need it
     # @abc.abstractmethod
-    def on_django_query(self, query):
+    def on_django_query(self, queryset):
         pass
 
     # TODO: Put it back when we need it
@@ -45,6 +46,24 @@ class FieldFilter(object):
         if self.options["drop_none"]:
             return False
         raise FilterOnNoneValue(field_name)
+
+
+class DjangoQueryFilterMixin(object):
+    __metaclass__ = abc.ABCMeta
+
+    def on_django_query(self, queryset):
+        from django.core.exceptions import FieldError
+        try:
+            return self._do_django_query(queryset)
+        except FieldError as e:
+            if self.options.get("none_for_missing_field"):
+                return queryset.none()
+            else:
+                raise FieldNotFound(six.text_type(e))
+
+    @abc.abstractmethod
+    def _do_django_query(self, queryset):
+        pass
 
 
 class DictFilterMixin(object):

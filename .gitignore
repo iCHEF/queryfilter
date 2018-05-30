@@ -104,3 +104,8 @@ ENV/
 # mypy
 .mypy_cache/
 
+# db
+db.sqlite3
+
+# unittest
+junit.xml

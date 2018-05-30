@@ -34,7 +34,7 @@ class TestNumberRangeFilter(object):
             lambda d: d[self.field_name_to_test] is not None, self.dicts
         )
 
-    def test_filter_range_cover_all_tesT_numbers_should_get_same_numbers(self):
+    def test_filter_range_cover_all_test_numbers_should_get_same_numbers(self):
         text_filter = NumberRangeFilter(self.field_name_to_test, {
             "max": self.max_test_number + 1, "min": self.min_test_number - 1
         })

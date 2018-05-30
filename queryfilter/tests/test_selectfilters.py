@@ -1,40 +1,63 @@
 from __future__ import absolute_import
 
+from queryfilter.tests.base_test_case import FilterTestCaseBase
 from ..selectfilters import SelectFilter
+from test_app.models import Data
 
 
-class TestSelectFilter(object):
-    def setup(self):
-        self.field_name_to_test = "member_type"
-        self.type_to_test = 1
-        self.dicts = [
-            {self.field_name_to_test: self.type_to_test}
+FIELD_NAME = "type"
+
+
+class TestSelectFilter(FilterTestCaseBase):
+
+    def get_default_data(self):
+        return [
+            {FIELD_NAME: 1}
         ]
 
+    @property
+    def model_class(self):
+        return Data
+
     def test_value_is_selected(self):
-        text_filter = SelectFilter(self.field_name_to_test, {
-            "values": [self.type_to_test]
+
+        choices = [1]
+
+        text_filter = SelectFilter(FIELD_NAME, {
+            "values": choices
         })
-        assert len(text_filter.on_dicts(self.dicts)) == 1
+
+        self.assert_filtered_data_length(text_filter, 1)
 
     def test_value_is_one_of_selections(self):
-        text_filter = SelectFilter(self.field_name_to_test, {
-            "values": [self.type_to_test, 2, 3, 4]
+
+        choices = [1, 2, 3, 4]
+
+        text_filter = SelectFilter(FIELD_NAME, {
+            "values": choices
         })
-        assert len(text_filter.on_dicts(self.dicts)) == 1
+
+        self.assert_filtered_data_length(text_filter, 1)
 
     def test_value_not_selected(self):
-        text_filter = SelectFilter(self.field_name_to_test, {
-            "values": [2, 3, 4]
+
+        choices = [2, 3, 4]
+
+        text_filter = SelectFilter(FIELD_NAME, {
+            "values": choices
         })
-        assert len(text_filter.on_dicts(self.dicts)) == 0
+
+        self.assert_filtered_data_length(text_filter, 0)
 
     def test_nothing_been_selected(self):
-        text_filter = SelectFilter(self.field_name_to_test, {
+
+        text_filter = SelectFilter(FIELD_NAME, {
             "values": []
         })
-        assert len(text_filter.on_dicts(self.dicts)) == 0
+
+        self.assert_filtered_data_length(text_filter, 0)
 
     def test_nothing_been_passed_to_filter(self):
-        text_filter = SelectFilter(self.field_name_to_test, {})
-        assert len(text_filter.on_dicts(self.dicts)) == 0
+        text_filter = SelectFilter(FIELD_NAME, {})
+
+        self.assert_filtered_data_length(text_filter, 0)

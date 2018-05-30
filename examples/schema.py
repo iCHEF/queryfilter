@@ -7,21 +7,23 @@ from queryfilter.schemas import (
     NumberRangeFilterQueryType,
     SelectFloatFilterQueryType,
     SelectStringFilterQueryType,
-    BirthFilterQueryType
-)
+    BirthFilterQueryType,
+    DatetimeRangeFilterType)
 
 EXAMPLE_DATA = [{
     "name": "A",
     "price": 100,
     "type": 0,
     "category": "X",
-    "birthday": "05/20"
+    "birthday": "05/20",
+    "datetime": "2018-05-25"
 }, {
     "name": "B",
     "price": 5,
     "type": 1,
     "category": "Y",
-    "birthday": "12/20"
+    "birthday": "12/20",
+    "datetime": "2018-05-26"
 }]
 
 
@@ -31,6 +33,7 @@ class ExampleDataSchema(graphene.ObjectType):
     type = graphene.Float()
     category = graphene.String()
     birthday = graphene.String()
+    datetime = graphene.String()
 
     def resolve_name(self, info):
         return self.get("name")
@@ -47,6 +50,9 @@ class ExampleDataSchema(graphene.ObjectType):
     def resolve_birthday(self, info):
         return self.get("birthday")
 
+    def resolve_datetime(self, info):
+        return self.get("datetime")
+
 
 class ExampleQueryFilter(graphene.InputObjectType):
     name = TextFilterQueryType()
@@ -54,6 +60,7 @@ class ExampleQueryFilter(graphene.InputObjectType):
     type = SelectFloatFilterQueryType()
     category = SelectStringFilterQueryType()
     birthday = BirthFilterQueryType()
+    datetime = DatetimeRangeFilterType()
 
 
 class ExampleSchemaWithFilter(graphene.ObjectType):
