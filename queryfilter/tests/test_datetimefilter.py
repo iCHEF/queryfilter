@@ -166,6 +166,3 @@ class TestFilterWithoutTime(object):
         queryset = DatetimeFilterTestingModel.objects.all()
         result = date_filter.on_django_query(queryset)
         assert len(result) == 1
-
-
-

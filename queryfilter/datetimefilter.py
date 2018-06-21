@@ -28,7 +28,7 @@ class DatetimeRangeFilter(DjangoQueryFilterMixin, DictFilterMixin,
         if not end_datetime:
             return None
 
-        if not end_datetime.time():
+        if _has_no_time_info(end_datetime):
             end_datetime = end_datetime + WHOLE_DAY - ONE_SECOND
 
         return end_datetime
@@ -92,3 +92,10 @@ def make_time_aware(datetime_data):
     if not datetime_data.tzinfo:
         datetime_data = datetime_data.replace(tzinfo=pytz.utc)
     return datetime_data
+
+
+def _has_no_time_info(value):
+    return value.hour == 0 and \
+           value.minute == 0 and \
+           value.second == 0 and \
+           value.microsecond == 0
