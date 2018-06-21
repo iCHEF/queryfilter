@@ -146,7 +146,7 @@ class TestDateRangeFilter(object):
 @pytest.mark.django_db
 class TestFilterWithoutTime(object):
 
-    def test_must_hit(self):
+    def test_end_date_has_no_time(self):
 
         datetime_datum = dateutil.parser.parse("2018-12-31T02:00:00+00:00")
 
