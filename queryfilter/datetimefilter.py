@@ -9,6 +9,10 @@ from .base import FieldFilter, DictFilterMixin, DjangoQueryFilterMixin
 from .queryfilter import QueryFilter
 
 
+WHOLE_DAY = datetime.timedelta(days=1)
+ONE_SECOND = datetime.timedelta(seconds=1)
+
+
 @QueryFilter.register_type_condition('datetime')
 class DatetimeRangeFilter(DjangoQueryFilterMixin, DictFilterMixin,
                           FieldFilter):
@@ -19,7 +23,15 @@ class DatetimeRangeFilter(DjangoQueryFilterMixin, DictFilterMixin,
 
     @property
     def end(self):
-        return get_end(self.filter_args.get("end"))
+        end_datetime = get_end(self.filter_args.get("end"))
+
+        if not end_datetime:
+            return None
+
+        if not end_datetime.time():
+            end_datetime = end_datetime + WHOLE_DAY - ONE_SECOND
+
+        return end_datetime
 
     def on_dicts(self, dicts):
 
@@ -72,4 +84,11 @@ def get_end(end_date_str):
 
 
 def parse(datetime_string):
-    return parser.parse(datetime_string)
+    return make_time_aware(parser.parse(datetime_string))
+
+
+def make_time_aware(datetime_data):
+
+    if not datetime_data.tzinfo:
+        datetime_data = datetime_data.replace(tzinfo=pytz.utc)
+    return datetime_data
