@@ -141,3 +141,12 @@ class TestDateRangeFilter(object):
 
         results_after_filter = date_filter.on_django_query(queryset)
         assert len(results_after_filter) == 2
+
+
+@pytest.mark.django_db
+class TestFilterWithoutTime(object):
+
+    def test_must_hit(self, dates, test_data, queryset):
+        raise Exception()
+
+
