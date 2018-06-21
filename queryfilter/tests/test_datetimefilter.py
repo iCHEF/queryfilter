@@ -141,3 +141,28 @@ class TestDateRangeFilter(object):
 
         results_after_filter = date_filter.on_django_query(queryset)
         assert len(results_after_filter) == 2
+
+
+@pytest.mark.django_db
+class TestFilterWithoutTime(object):
+
+    def test_end_date_has_no_time(self):
+
+        datetime_datum = dateutil.parser.parse("2018-12-31T02:00:00+00:00")
+
+        DatetimeFilterTestingModel.objects.create(datetime=datetime_datum)
+        test_data = [{
+            FIELD_NAME: datetime_datum
+        }]
+
+        date_filter = DatetimeRangeFilter(FIELD_NAME, {
+            "start": '2018-12-31',
+            "end": '2018-12-31',
+        })
+
+        result = date_filter.on_dicts(test_data)
+        assert len(result) == 1
+
+        queryset = DatetimeFilterTestingModel.objects.all()
+        result = date_filter.on_django_query(queryset)
+        assert len(result) == 1
