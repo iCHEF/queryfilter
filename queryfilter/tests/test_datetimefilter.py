@@ -171,7 +171,7 @@ class TestFilterWithoutTime(object):
 @pytest.mark.django_db
 class TestFilterWithoutValue(object):
 
-    def test_end_date_has_no_time(self):
+    def test_non_required_value_should_filter_nothing(self):
 
         datetime_datum = dateutil.parser.parse("2018-12-31T02:00:00+00:00")
 
