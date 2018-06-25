@@ -22,7 +22,7 @@ class TextFilterQueryType(graphene.InputObjectType):
     condition = graphene.Field(
         TextFilterTypes, default_value=TextFilterTypes.EQUALS.value
     )
-    value = graphene.String(description="text to query", required=True)
+    value = graphene.String(description="text to query")
 
 
 class SelectStringFilterQueryType(graphene.InputObjectType):
@@ -33,7 +33,7 @@ class SelectStringFilterQueryType(graphene.InputObjectType):
     )
 
     values = graphene.List(
-        graphene.String, description="text list to query", required=True
+        graphene.String, description="text list to query"
     )
 
 

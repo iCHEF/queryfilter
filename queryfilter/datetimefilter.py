@@ -42,6 +42,9 @@ class DatetimeRangeFilter(DjangoQueryFilterMixin, DictFilterMixin,
             else:
                 to_compare = parse(datetime_string)
 
+            if not self.start and not self.end:
+                return False
+
             if self.start and (to_compare < self.start):
                 return False
 
@@ -54,6 +57,9 @@ class DatetimeRangeFilter(DjangoQueryFilterMixin, DictFilterMixin,
 
     def _do_django_query(self, queryset):
         query_dict = dict()
+
+        if not self.start and not self.end:
+            return queryset.none()
 
         if self.start:
             query_dict["{}__gte".format(self.field_name)] = self.start
