@@ -3,8 +3,10 @@ from __future__ import absolute_import
 import pytest
 
 from ..numberfilters import NumberRangeFilter
+from test_app.models import Data
 
 
+@pytest.mark.django_db
 class TestNumberRangeFilter(object):
     def setup(self):
         self.field_name_to_test = "age"
@@ -13,6 +15,10 @@ class TestNumberRangeFilter(object):
             {self.field_name_to_test: num}
             for num in self.numbers_to_test
         ]
+        for number in self.numbers_to_test:
+            if number is not None:
+                Data.objects.create(age=number)
+        self.data_queryset = Data.objects.all()
 
     @property
     def max_test_number(self):
@@ -40,29 +46,36 @@ class TestNumberRangeFilter(object):
         })
         filtered_dicts = text_filter.on_dicts(self.dicts)
         assert len(filtered_dicts) == len(list(self.no_none_test_numbers))
+        filtered_queryset = text_filter.on_django_query(self.data_queryset)
+        assert len(filtered_queryset) == len(list(self.no_none_test_numbers))
 
     def test_range_smaller_than_test_numbers_should_get_empty_list(self):
         text_filter = NumberRangeFilter(self.field_name_to_test, {
             "max": self.min_test_number - 1, "min": self.min_test_number - 1
         })
         assert len(text_filter.on_dicts(self.dicts)) == 0
+        assert len(text_filter.on_django_query(self.data_queryset)) == 0
 
     def test_range_larger_than_test_numbers_should_get_empty_list(self):
         text_filter = NumberRangeFilter(self.field_name_to_test, {
             "max": self.max_test_number + 1, "min": self.max_test_number + 1
         })
         assert len(text_filter.on_dicts(self.dicts)) == 0
+        assert len(text_filter.on_django_query(self.data_queryset)) == 0
 
     def test_range_with_0_should_get_result(self):
         text_filter = NumberRangeFilter(self.field_name_to_test, {
             "max": 0, "min": 0
         })
         assert len(text_filter.on_dicts(self.dicts)) == 1
+        assert len(text_filter.on_django_query(self.data_queryset)) == 1
 
     def test_number_has_no_range(self):
         text_filter = NumberRangeFilter(self.field_name_to_test, {})
         filtered_dicts = text_filter.on_dicts(self.dicts)
         assert len(filtered_dicts) == len(list(self.no_none_test_numbers))
+        filtered_queryset = text_filter.on_django_query(self.data_queryset)
+        assert len(filtered_queryset) == len(list(self.no_none_test_numbers))
 
     def test_range_with_smaller_max_option_only(self):
         text_filter = NumberRangeFilter(self.field_name_to_test, {
@@ -70,6 +83,8 @@ class TestNumberRangeFilter(object):
         })
         filtered_dicts = text_filter.on_dicts(self.dicts)
         assert len(filtered_dicts) == len(list(self.no_none_test_numbers)) - 1
+        filtered_queryset = text_filter.on_django_query(self.data_queryset)
+        assert len(filtered_queryset) == len(list(self.no_none_test_numbers)) - 1
 
     @pytest.mark.parametrize("max_bias", [1, 0])
     def test_range_with_larger_or_equal_max_option_only(self, max_bias):
@@ -78,6 +93,8 @@ class TestNumberRangeFilter(object):
         })
         filtered_dicts = text_filter.on_dicts(self.dicts)
         assert len(filtered_dicts) == len(list(self.no_none_test_numbers))
+        filtered_queryset = text_filter.on_django_query(self.data_queryset)
+        assert len(filtered_queryset) == len(list(self.no_none_test_numbers))
 
     def test_range_with_larger_min_option_only(self):
         text_filter = NumberRangeFilter(self.field_name_to_test, {
@@ -85,6 +102,8 @@ class TestNumberRangeFilter(object):
         })
         filtered_dicts = text_filter.on_dicts(self.dicts)
         assert len(filtered_dicts) == len(list(self.no_none_test_numbers)) - 1
+        filtered_queryset = text_filter.on_django_query(self.data_queryset)
+        assert len(filtered_queryset) == len(list(self.no_none_test_numbers)) - 1
 
     @pytest.mark.parametrize("min_bias", [1, 0])
     def test_range_with_smaller_or_equal_min_option_only(self, min_bias):
@@ -93,3 +112,5 @@ class TestNumberRangeFilter(object):
         })
         filtered_dicts = text_filter.on_dicts(self.dicts)
         assert len(filtered_dicts) == len(list(self.no_none_test_numbers))
+        filtered_queryset = text_filter.on_django_query(self.data_queryset)
+        assert len(filtered_queryset) == len(list(self.no_none_test_numbers))

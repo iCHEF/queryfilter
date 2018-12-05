@@ -10,7 +10,8 @@ from .queryfilter import QueryFilter
 class TextMatchMixin(DjangoQueryFilterMixin, DictFilterMixin):
 
     @abc.abstractmethod
-    def _is_value_matched(self, value): pass
+    def _is_value_matched(self, value):
+        pass
 
     @abc.abstractproperty
     def django_lookup_type(self):
