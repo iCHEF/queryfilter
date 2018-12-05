@@ -56,8 +56,8 @@ def test_data(request):
 
 
 @pytest.fixture
-def queryset(request):
-    data = test_data(request)
+def queryset(test_data):
+    data = test_data
 
     for datum in data:
         DatetimeFilterTestingModel.objects.create(**{
