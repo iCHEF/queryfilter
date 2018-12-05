@@ -84,7 +84,8 @@ class TestNumberRangeFilter(object):
         filtered_dicts = text_filter.on_dicts(self.dicts)
         assert len(filtered_dicts) == len(list(self.no_none_test_numbers)) - 1
         filtered_queryset = text_filter.on_django_query(self.data_queryset)
-        assert len(filtered_queryset) == len(list(self.no_none_test_numbers)) - 1
+        assert len(filtered_queryset) == \
+            len(list(self.no_none_test_numbers)) - 1
 
     @pytest.mark.parametrize("max_bias", [1, 0])
     def test_range_with_larger_or_equal_max_option_only(self, max_bias):
@@ -103,7 +104,8 @@ class TestNumberRangeFilter(object):
         filtered_dicts = text_filter.on_dicts(self.dicts)
         assert len(filtered_dicts) == len(list(self.no_none_test_numbers)) - 1
         filtered_queryset = text_filter.on_django_query(self.data_queryset)
-        assert len(filtered_queryset) == len(list(self.no_none_test_numbers)) - 1
+        assert len(filtered_queryset) == \
+            len(list(self.no_none_test_numbers)) - 1
 
     @pytest.mark.parametrize("min_bias", [1, 0])
     def test_range_with_smaller_or_equal_min_option_only(self, min_bias):
