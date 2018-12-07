@@ -1,11 +1,11 @@
 from __future__ import absolute_import
 
-from .base import FieldFilter, DictFilterMixin
+from .base import FieldFilter, DictFilterMixin, DjangoQueryFilterMixin
 from .queryfilter import QueryFilter
 
 
 @QueryFilter.register_type_condition('number')
-class NumberRangeFilter(DictFilterMixin, FieldFilter):
+class NumberRangeFilter(DjangoQueryFilterMixin, DictFilterMixin, FieldFilter):
     def get_query_range(self):
         min_value = self.filter_args.get("min")
         max_value = self.filter_args.get("max")
@@ -25,3 +25,23 @@ class NumberRangeFilter(DictFilterMixin, FieldFilter):
             d for d in dicts
             if is_value_matched(self.get(d, self.field_name))
         ]
+
+    def _do_django_query(self, queryset):
+        (min_value, max_value) = self.get_query_range()
+
+        query = dict()
+
+        if min_value is not None:
+            query.update({
+                self.field_name + "__gte": min_value
+            })
+
+        if max_value is not None:
+            query.update({
+                self.field_name + "__lte": max_value
+            })
+
+        if query:
+            return queryset.filter(**query)
+        else:
+            return queryset
