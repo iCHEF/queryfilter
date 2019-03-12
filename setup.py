@@ -18,7 +18,7 @@ required_dev = [
 
 setup(
     name="queryfilter",
-    version="0.4.5",
+    version="0.4.6",
     description=("Allow same query interface to be shared between Django ORM,"
                  "SQLAlchemy, and GraphQL backend."),
     long_description=open(os.path.join(source_root, "README.rst")).read(),
@@ -29,7 +29,7 @@ setup(
     package_data={
         "": ["*.pyi", "*.rst", "*.md"],
     },
-    install_requires=["graphene~=2.0.1", "python-dateutil"],
+    install_requires=["graphene>=2.0.1,<3", "python-dateutil"],
     setup_requires=["pytest-runner"],
     extras_require={
         'dev': required_dev
