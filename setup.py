@@ -18,7 +18,7 @@ required_dev = [
 
 setup(
     name="queryfilter",
-    version="0.4.6",
+    version="0.4.7",
     description=("Allow same query interface to be shared between Django ORM,"
                  "SQLAlchemy, and GraphQL backend."),
     long_description=open(os.path.join(source_root, "README.rst")).read(),
