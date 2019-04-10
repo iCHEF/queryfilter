@@ -60,12 +60,6 @@ class TestBirthdayDateRangeFilter(object):
 
 
 class TestEmptyValue(object):
-    def setup(self):
-        self.field_name_to_test = "birth"
-        self.dates_to_test = ("12/31", "01/11", "02/29", "01/11")
-        self.dataset_to_test = [
-            {self.field_name_to_test: date} for date in self.dates_to_test
-        ]
 
     def test_empty_values(self):
 
