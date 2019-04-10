@@ -9,8 +9,17 @@ matrix:
     env: TOXENV=py36
   - python: 2.7
     env: TOXENV=py27
+
+addons:
+  apt:
+    sources:
+      - travis-ci/sqlite3
+    packages:
+      - sqlite3
+
 install:
 - pip install pip --upgrade
 - travis_retry pip install -e ".[dev]"
+
 script:
 - tox
