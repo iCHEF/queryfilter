@@ -67,7 +67,7 @@ class BirthdayDateRangeFilter(DictFilterMixin, FieldFilter):
 
         def by_value_of_dict_field_in_range(dictobj):
             value = self.get(dictobj, self.field_name)
-            if value is None:
+            if value in (None, ''):
                 return self.false_with_drop_none_else_raise(self.field_name)
             month, day = self.split_month_day(value)
             return in_given_range(month, day)

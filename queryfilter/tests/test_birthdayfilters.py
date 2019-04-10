@@ -57,3 +57,24 @@ class TestBirthdayDateRangeFilter(object):
         results_after_filter = date_filter.on_dicts(self.dataset_to_test)
         assert len(results_after_filter) == 1
         assert results_after_filter[0]["birth"] == "02/29"
+
+
+class TestEmptyValue(object):
+
+    def test_empty_values(self):
+
+        birth = 'birth'
+
+        date_filter = BirthdayDateRangeFilter(birth, {
+            "start": '01/11',
+            "end": '04/01',
+        })
+
+        data = [
+            {birth: ''},
+            {birth: None},
+            {birth: u''},
+        ]
+
+        results_after_filter = date_filter.on_dicts(data)
+        assert len(results_after_filter) == 0
