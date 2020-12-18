@@ -18,13 +18,16 @@ class SelectFilter(DjangoQueryFilterMixin, FieldFilter):
             if d.get(self.field_name) in self.choices
         ]
 
-    def _do_django_query(self, queryset):
+    @property
+    def query_params(self):
+        return {
+            self.field_name + "__in": self.choices
+        } if self.choices else None
 
-        if not self.choices:
+    def _do_django_query(self, queryset):
+        query_params = self.query_params
+
+        if query_params is None:
             return queryset.none()
 
-        query = {
-            self.field_name + "__in": self.choices
-        }
-
-        return queryset.filter(**query)
+        return queryset.filter(**query_params)

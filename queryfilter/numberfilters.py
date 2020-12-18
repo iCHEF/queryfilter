@@ -26,22 +26,28 @@ class NumberRangeFilter(DjangoQueryFilterMixin, DictFilterMixin, FieldFilter):
             if is_value_matched(self.get(d, self.field_name))
         ]
 
-    def _do_django_query(self, queryset):
+    @property
+    def query_params(self):
         (min_value, max_value) = self.get_query_range()
 
-        query = dict()
+        if min_value is None and max_value is None:
+            return None
 
+        query_params = dict()
         if min_value is not None:
-            query.update({
+            query_params.update({
                 self.field_name + "__gte": min_value
             })
 
         if max_value is not None:
-            query.update({
+            query_params.update({
                 self.field_name + "__lte": max_value
             })
+        return query_params
 
-        if query:
-            return queryset.filter(**query)
+    def _do_django_query(self, queryset):
+        query_params = self.query_params
+        if query_params:
+            return queryset.filter(**query_params)
         else:
             return queryset

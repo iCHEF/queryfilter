@@ -55,22 +55,23 @@ class DatetimeRangeFilter(DjangoQueryFilterMixin, DictFilterMixin,
 
         return list(filter(in_range, dicts))
 
-    def _do_django_query(self, queryset):
-        query_dict = dict()
-
-        if not self.start and not self.end:
-            return queryset.none()
-
+    @property
+    def query_params(self):
+        if not any((self.start, self.end)):
+            return None
+        query_params = dict()
         if self.start:
-            query_dict["{}__gte".format(self.field_name)] = self.start
-
+            query_params["{}__gte".format(self.field_name)] = self.start
         if self.end:
-            query_dict["{}__lte".format(self.field_name)] = self.end
+            query_params["{}__lte".format(self.field_name)] = self.end
+        return query_params
 
-        if query_dict:
-            return queryset.filter(**query_dict)
+    def _do_django_query(self, queryset):
+        query_params = self.query_params
+        if query_params:
+            return queryset.filter(**query_params)
         else:
-            return queryset
+            return queryset.none()
 
 
 min_datetime = datetime.datetime.min.replace(tzinfo=pytz.utc)
