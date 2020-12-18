@@ -62,9 +62,9 @@ class DjangoQueryFilterMixin(object):
                 raise FieldNotFound(six.text_type(e))
 
     """
-    # change to 
+    # change to
         @abc.abstractmethod
-        @property 
+        @property
     after we remove the support of py2.7
     """
     @abc.abstractproperty
