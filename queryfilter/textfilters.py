@@ -20,18 +20,18 @@ class TextMatchMixin(DjangoQueryFilterMixin, DictFilterMixin):
     def get_query_value(self):
         return self.filter_args["value"]
 
-    def _do_django_query(self, queryset):
-
+    @property
+    def query_params(self):
         if self.django_lookup_type:
             lookup_keyword = self.field_name + "__" + self.django_lookup_type
         else:
             lookup_keyword = self.field_name
-
-        query_parameter = {
-             lookup_keyword: self.get_query_value()
+        return {
+            lookup_keyword: self.get_query_value()
         }
 
-        return queryset.filter(**query_parameter)
+    def _do_django_query(self, queryset):
+        return queryset.filter(**self.query_params)
 
     def on_dicts(self, dicts):
         kept_dicts = []
