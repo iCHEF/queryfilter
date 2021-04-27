@@ -33,6 +33,14 @@ class TestTextFullyMatchedFilter(TextFilterTestBase):
 
         self.assert_filtered_data_length(text_filter, 1)
 
+    def test_text_fully_match_list(self):
+
+        text_filter = TextFullyMatchedFilter(self.field_name_to_test, {
+            "value": "not_existed," + self.text_to_test + ",not_existed2"
+        })
+
+        self.assert_filtered_data_length(text_filter, 1)
+
     def test_text_does_not_fully_match_should_fail(self):
 
         text_not_match = "not_name_example"
@@ -47,6 +55,12 @@ class TestTextPartialMatchedFilter(TextFilterTestBase):
     def test_text_partial_match(self):
         text_filter = TextPartialMatchedFilter(self.field_name_to_test, {
             "value": self.text_to_test[:1]
+        })
+        self.assert_filtered_data_length(text_filter, 1)
+
+    def test_text_partial_match_list(self):
+        text_filter = TextPartialMatchedFilter(self.field_name_to_test, {
+            "value": ("not_existed," + self.text_to_test[:1] + ",not_existed2")
         })
         self.assert_filtered_data_length(text_filter, 1)
 
@@ -65,6 +79,14 @@ class TestTextStartsWithMatchedFilter(TextFilterTestBase):
 
         text_filter = TextStartsWithMatchedFilter(self.field_name_to_test, {
             "value": self.text_to_test[:1]
+        })
+
+        self.assert_filtered_data_length(text_filter, 1)
+
+    def test_text_partial_match_list(self):
+
+        text_filter = TextStartsWithMatchedFilter(self.field_name_to_test, {
+            "value": "not_existed," + self.text_to_test[:1] + ",not_existed2"
         })
 
         self.assert_filtered_data_length(text_filter, 1)
@@ -91,10 +113,16 @@ class TestTextEndsWithMatchedFilter(TextFilterTestBase):
         })
         self.assert_filtered_data_length(text_filter, 1)
 
+    def test_text_partial_match_list(self):
+        text_filter = TextEndsWithMatchedFilter(self.field_name_to_test, {
+            "value": self.text_to_test[-1:]
+        })
+        self.assert_filtered_data_length(text_filter, 1)
+
     def test_text_does_not_partial_match_should_fail(self):
         text_not_match = "not"
         text_filter = TextEndsWithMatchedFilter(self.field_name_to_test, {
-            "value": text_not_match
+            "value": "not_existed," + text_not_match + ",not_existed2"
         })
         self.assert_filtered_data_length(text_filter, 0)
 
