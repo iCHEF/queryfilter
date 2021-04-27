@@ -6,7 +6,7 @@ from ..exceptions import (
     FieldNotFound
 )
 from ..textfilters import (
-    TextFullyMatchedFilter
+    TextFullyMatchedFilter, TextStartsWithMatchedFilter
 )
 
 
@@ -37,6 +37,12 @@ class TestNestedFiler(object):
 
     def test_none_as_value_should_work_as_well(self):
         text_filter = TextFullyMatchedFilter(self.field_name_to_test, {
+            "value": None
+        })
+        assert len(text_filter.on_dicts(self.dicts)) == 0
+
+    def test_none_as_value_should_work_as_well_2(self):
+        text_filter = TextStartsWithMatchedFilter(self.field_name_to_test, {
             "value": None
         })
         assert len(text_filter.on_dicts(self.dicts)) == 0
